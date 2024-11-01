@@ -24,16 +24,11 @@ const link = [
   },
   {
     link: "Transaction",
-    url: "/transaction",
+    url: "/withdraw",
   },
 ];
 
 const Navbar = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleHover = () => {
-    setIsHovered(!isHovered);
-  };
 
   return (
     <header className="w-full max-w-screen border-b border-black py-2">
@@ -48,13 +43,31 @@ const Navbar = () => {
                 {item.link === "Vendor" ? (
                   <>
                     <DropdownMenu>
-                      <DropdownMenuTrigger className="text-xl font-bold focus:outline-none">Vendor</DropdownMenuTrigger>
+                      <DropdownMenuTrigger className="text-xl font-bold focus:outline-none">
+                        Vendor
+                      </DropdownMenuTrigger>
                       <DropdownMenuContent className="p-5 bg-white border-[0.5px] border-gray-400">
                         <DropdownMenuItem className="text-xl font-semibold">
-                            <Link to="/vendor/approval">Vendor Approval</Link>
+                          <Link to="/vendor/approval">Vendor Approval</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-xl font-semibold">
-                            <Link to="/vendor/approved">Approved Vendor</Link>
+                          <Link to="/vendor/approved">Approved Vendor</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                ) : item.link === "Transaction" ? (
+                  <>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="text-xl font-bold focus:outline-none">
+                        Transaction
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="p-5 bg-white border-[0.5px] border-gray-400">
+                        <DropdownMenuItem className="text-xl font-semibold">
+                          <Link to="/transaction/withdraw">Withdraw Approval</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-xl font-semibold">
+                          <Link to="/transaction/approved">List Transaction</Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
