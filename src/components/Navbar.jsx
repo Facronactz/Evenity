@@ -8,7 +8,7 @@ import { DropdownMenuContent } from "./ui/dropdown-menu";
 const link = [
   {
     link: "Dashboard",
-    url: "#",
+    url: "/",
   },
   {
     link: "Vendor",
@@ -16,15 +16,15 @@ const link = [
   },
   {
     link: "Event",
-    url: "#",
+    url: "/event",
   },
   {
     link: "User",
-    url: "#",
+    url: "/user",
   },
   {
     link: "Transaction",
-    url: "#",
+    url: "/transaction",
   },
 ];
 
