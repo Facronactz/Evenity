@@ -5,6 +5,7 @@ import VendorPage from "../pages/VendorPage";
 import EventsPage from "@/pages/EventsPage";
 import WithdrawPage from "@/pages/WithdrawPage";
 import TransactionPage from "@/pages/TransactionPage";
+import UsersPage from "@/pages/UsersPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/transaction/approved",
         element: <TransactionPage />,
+      },
+      {
+        path: "/user",
+        element: <UsersPage type={"user"} />,
       },
       {
         path: "/event",
