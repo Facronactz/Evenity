@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom"
 import LoginPage from "../pages/LoginPage"
 import App from "../App"
-import VendorPage from "../pages/VendorPage"
+import VendorPage from "@/pages/VendorPage"
 import EventsPage from "@/pages/EventsPage"
+import UsersPage from "@/pages/UsersPage"
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         {
           path : "/event",
           element : <EventsPage/>
+        },
+        {
+          path : "/user",
+          element : <UsersPage/>
         }
       ]
     },
