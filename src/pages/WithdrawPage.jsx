@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 const WithdrawPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -145,9 +146,7 @@ const WithdrawPage = () => {
             <div className="flex justify-between">
               <h1 className="">Status</h1>
               <div className="flex justify-between items-center">
-                <p className="p-2 rounded-full bg-[#00AA55] text-white px-5">
-                  Active
-                </p>
+                <Badge className={"bg-[#00AA55] text-white"}>Active</Badge>
               </div>
             </div>
           </div>
