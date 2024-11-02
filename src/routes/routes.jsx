@@ -6,11 +6,16 @@ import EventsPage from "@/pages/EventsPage";
 import WithdrawPage from "@/pages/WithdrawPage";
 import TransactionPage from "@/pages/TransactionPage";
 import UsersPage from "@/pages/UsersPage";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/vendor/approval",
