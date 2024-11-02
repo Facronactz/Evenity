@@ -14,8 +14,6 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const {isLoggedIn, user} = useSelector((state) => state.auth)
 
-  console.log(user)
-
   useEffect(() => {
     if(isLoggedIn) navigate("/")
   }, [isLoggedIn]);
