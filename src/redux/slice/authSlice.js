@@ -6,7 +6,7 @@ import {jwtDecode} from "jwt-decode";
 export const login = createAsyncThunk(
     'auth/login',
     async ({email, password}, {rejectWithValue}) => {
-        email = email.toLowerCase()
+       try{ email = email.toLowerCase()
         const response = await axios.post("auth/login", {email, password}).catch(e => e.response)
         // console.log(response.status)
         if (response.status !== 200) return rejectWithValue("Invalid email or password");
@@ -22,6 +22,9 @@ export const login = createAsyncThunk(
             return {userId, email, role};
         } else {
             return rejectWithValue("Invalid email or password");
+        }} catch (e) {
+            console.log(e)
+            return rejectWithValue(e)
         }
     }
 );
