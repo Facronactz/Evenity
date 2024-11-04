@@ -3,6 +3,8 @@ import authSlice from "./slice/authSlice";
 import customerSlice from "./slice/customerSlice";
 import transactionSlice from "./slice/transactionSlice";
 import withdrawSlice from "./slice/withdrawslice";
+import vendorSlice from "./slice/vendorSlice";
+import eventSlice from "./slice/eventSlice";
 
 const store = configureStore({
     reducer : {
@@ -10,6 +12,8 @@ const store = configureStore({
         customer : customerSlice,
         transaction : transactionSlice,
         withdraw : withdrawSlice
+        vendor: vendorSlice,
+        event: eventSlice
     }
 })
 
