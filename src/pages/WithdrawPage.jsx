@@ -1,5 +1,5 @@
 import Modal from "@/components/Modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillSpeakerFill } from "react-icons/bs";
 import {
   Table,
@@ -11,6 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllWithdraws } from "@/redux/slice/withdrawslice";
 
 const WithdrawPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,90 +23,81 @@ const WithdrawPage = () => {
   // Function to close the dialog
   const closeDialog = () => setIsOpen(false);
 
+  const dispatch = useDispatch();
+  const { withdrawRequests } = useSelector((state) => state.withdraw);
+  console.log(withdrawRequests);
+  useEffect(() => {
+    dispatch(getAllWithdraws());
+  }, []);
+
   return (
     <div className="container mx-auto">
-      <h1 className="text-6xl font-bold py-20 text-center">
+      <h1 className="text-6xl font-bold pb-12 pt-8 text-center">
         Withdraws Approval
       </h1>
-      <div className="grid grid-cols gap-12 mb-20">
+      <div className="grid grid-cols gap-8 mb-20">
         <div
           onClick={openDialog}
-          className="px-12 py-8 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
+          className="px-12 py-2 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
         >
           <div className="flex text-[#00AA55] header-detail">
-            <h1 className="text-3xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
-            <p className="text-3xl w-1/2 text-right">20.000.000</p>
+            <h1 className="text-2xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
+            <p className="text-2xl w-1/2 text-right">20.000.000</p>
           </div>
           <div className="border-b-2 border-gray-300 my-2"></div>
           <div className="flex">
-            <h1 className="text-4xl font-bold mb-4 w-1/2">
+            <h1 className="text-3xl font-bold mb-4 w-1/2">
               Jaya Kencana Catering
             </h1>
-            <p className="text-3xl w-1/2 text-right">BCA - 200010230243</p>
+            <p className="text-2xl w-1/2 text-right">BCA - 200010230243</p>
           </div>
         </div>
         <div
           onClick={openDialog}
-          className="px-12 py-8 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
+          className="px-12 py-2 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
         >
           <div className="flex text-[#00AA55] header-detail">
-            <h1 className="text-3xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
-            <p className="text-3xl w-1/2 text-right">20.000.000</p>
+            <h1 className="text-2xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
+            <p className="text-2xl w-1/2 text-right">20.000.000</p>
           </div>
           <div className="border-b-2 border-gray-300 my-2"></div>
           <div className="flex">
-            <h1 className="text-4xl font-bold mb-4 w-1/2">
+            <h1 className="text-3xl font-bold mb-4 w-1/2">
               Jaya Kencana Catering
             </h1>
-            <p className="text-3xl w-1/2 text-right">BCA - 200010230243</p>
+            <p className="text-2xl w-1/2 text-right">BCA - 200010230243</p>
           </div>
         </div>
         <div
           onClick={openDialog}
-          className="px-12 py-8 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
+          className="px-12 py-2 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
         >
           <div className="flex text-[#00AA55] header-detail">
-            <h1 className="text-3xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
-            <p className="text-3xl w-1/2 text-right">20.000.000</p>
+            <h1 className="text-2xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
+            <p className="text-2xl w-1/2 text-right">20.000.000</p>
           </div>
           <div className="border-b-2 border-gray-300 my-2"></div>
           <div className="flex">
-            <h1 className="text-4xl font-bold mb-4 w-1/2">
+            <h1 className="text-3xl font-bold mb-4 w-1/2">
               Jaya Kencana Catering
             </h1>
-            <p className="text-3xl w-1/2 text-right">BCA - 200010230243</p>
+            <p className="text-2xl w-1/2 text-right">BCA - 200010230243</p>
           </div>
         </div>
         <div
           onClick={openDialog}
-          className="px-12 py-8 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
+          className="px-12 py-2 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
         >
           <div className="flex text-[#00AA55] header-detail">
-            <h1 className="text-3xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
-            <p className="text-3xl w-1/2 text-right">20.000.000</p>
+            <h1 className="text-2xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
+            <p className="text-2xl w-1/2 text-right">20.000.000</p>
           </div>
           <div className="border-b-2 border-gray-300 my-2"></div>
           <div className="flex">
-            <h1 className="text-4xl font-bold mb-4 w-1/2">
+            <h1 className="text-3xl font-bold mb-4 w-1/2">
               Jaya Kencana Catering
             </h1>
-            <p className="text-3xl w-1/2 text-right">BCA - 200010230243</p>
-          </div>
-        </div>
-        <div
-          onClick={openDialog}
-          className="px-12 py-8 w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
-        >
-          <div className="flex text-[#00AA55] header-detail">
-            <h1 className="text-3xl mb-4 w-1/2">Kamis, 20 September 2024</h1>
-            <p className="text-3xl w-1/2 text-right">20.000.000</p>
-          </div>
-          <div className="border-b-2 border-gray-300 my-2"></div>
-          <div className="flex">
-            <h1 className="text-4xl font-bold mb-4 w-1/2">
-              Jaya Kencana Catering
-            </h1>
-            <p className="text-3xl w-1/2 text-right">BCA - 200010230243</p>
+            <p className="text-2xl w-1/2 text-right">BCA - 200010230243</p>
           </div>
         </div>
       </div>

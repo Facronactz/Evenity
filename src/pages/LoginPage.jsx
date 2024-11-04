@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  setupAxios();
+    setupAxios();
 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");

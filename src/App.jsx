@@ -5,7 +5,10 @@ import { setupAxios } from './config/axiosConfig'
 
 const App = () => {
 
-  setupAxios();
+  const token = localStorage.getItem("token");
+  if (token) {
+    setupAxios(token);
+  }
 
 
   return (
