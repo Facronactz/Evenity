@@ -1,12 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 
 export const getAllCustomers = createAsyncThunk(
-    'customer/getAllCustomers', 
+    'customer/getAllCustomers',
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/customer')
+            const response = await axios.get('/customer/active')
             return response.data.data
         } catch (error) {
             rejectWithValue(error)
@@ -14,14 +14,14 @@ export const getAllCustomers = createAsyncThunk(
     })
 
 const customerSlice = createSlice({
-    name : "user",
-    initialState : {
-        customers : [],
-        selectedCustomer : null,
-        status : "",      
+    name: "user",
+    initialState: {
+        customers: [],
+        selectedCustomer: null,
+        status: "",
     },
-    reducers : {
-        setSelectedCustomer : (state, action) => {
+    reducers: {
+        setSelectedCustomer: (state, action) => {
             state.selectedCustomer = action.payload
         }
     },
@@ -41,6 +41,6 @@ const customerSlice = createSlice({
     }
 })
 
-export const { setSelectedCustomer } = customerSlice.actions
+export const {setSelectedCustomer} = customerSlice.actions
 
 export default customerSlice.reducer

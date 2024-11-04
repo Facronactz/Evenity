@@ -11,7 +11,7 @@ const store = configureStore({
         auth : authSlice,
         customer : customerSlice,
         transaction : transactionSlice,
-        withdraw : withdrawSlice
+        withdraw : withdrawSlice,
         vendor: vendorSlice,
         event: eventSlice
     }
