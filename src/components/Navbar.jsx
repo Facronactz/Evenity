@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { DropdownMenuContent } from "./ui/dropdown-menu";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/slice/authSlice";
 
 const link = [
   {
@@ -30,6 +32,8 @@ const link = [
 
 const Navbar = () => {
 
+  const dispatch = useDispatch();
+
   return (
     <header className="w-full max-w-screen border-b border-black py-2">
       <div className="container mx-auto flex items-center justify-between">
@@ -37,7 +41,7 @@ const Navbar = () => {
           <img src={logo} alt="" />
         </div>
         <nav>
-          <ul className="flex gap-8">
+          <ul className="flex items-center gap-8">
             {link.map((item, i) => (
               <li key={i}>
                 {item.link === "Vendor" ? (
@@ -79,7 +83,9 @@ const Navbar = () => {
                 )}
               </li>
             ))}
+             <button onClick={() => dispatch(logout())} className="p-2 bg-red-500 text-white">Logout</button>
           </ul>
+         
         </nav>
       </div>
     </header>

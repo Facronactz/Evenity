@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {setupAxios} from "@/config/axiosConfig";
 import {jwtDecode} from "jwt-decode";
+import toast from "react-hot-toast";
 
 export const login = createAsyncThunk(
     'auth/login',
@@ -53,6 +54,7 @@ const AuthSlice = createSlice({
             state.status = "idle";
             state.registerData = null;
             state.registerAs = null;
+            toast.success("Logout Success");
             delete axios.defaults.headers.common["Authorization"];
         },
         resetError: (state) => {
@@ -66,6 +68,7 @@ const AuthSlice = createSlice({
         builder
 
             .addCase(login.fulfilled, (state, action) => {
+                toast.success("Login Success");
                 state.status = "logged in";
                 action.payload.role === "ROLE_ADMIN" ? state.isLoggedIn = true : state.isLoggedIn = false;
                 state.user = action.payload;
@@ -74,6 +77,7 @@ const AuthSlice = createSlice({
                 state.registerAs = null;
             })
           .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
+                toast.error(action.payload);
                 state.status = "failed";
                 state.isLoggedIn = false;
                 state.user = null;
