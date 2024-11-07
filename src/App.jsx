@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import {Outlet} from 'react-router-dom'
 import {setupAxios} from './config/axiosConfig'
+import CustomerNavbar from './components/NavbarV2'
 
 const App = () => {
 
@@ -14,6 +15,7 @@ const App = () => {
     return (
         <>
             <Navbar/>
+            {/* <CustomerNavbar/> */}
             <Outlet/>
         </>
     )

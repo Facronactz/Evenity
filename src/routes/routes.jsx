@@ -7,6 +7,7 @@ import WithdrawPage from "@/pages/WithdrawPage";
 import TransactionPage from "@/pages/TransactionPage";
 import UsersPage from "@/pages/UsersPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import LandingPage from "@/pages/LandingPage";
 
 const router = createBrowserRouter([
   {
@@ -45,12 +46,18 @@ const router = createBrowserRouter([
         path: "/withdraw",
         element: <WithdrawPage />,
       },
+   
     ],
   },
   {
     path: "/login",
     element: <LoginPage />,
   },
+  {
+    path: "/landing",
+    element: <LandingPage/>,
+  }
+ 
 ]);
 
 export default router;

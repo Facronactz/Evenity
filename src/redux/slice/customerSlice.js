@@ -6,7 +6,7 @@ export const getAllCustomers = createAsyncThunk(
     'customer/getAllCustomers',
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/customer/active')
+            const response = await axios.get('/customer')
             return response.data.data
         } catch (error) {
             rejectWithValue(error)
