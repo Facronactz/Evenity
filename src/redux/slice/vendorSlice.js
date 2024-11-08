@@ -1,31 +1,43 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice
+} from "@reduxjs/toolkit";
 import axios from "axios";
+
+const itemsPerPage = 6;
 
 export const getAllVendors = createAsyncThunk(
   "vendor/getAllVendors",
-  async (_, { rejectWithValue }) => {
+  async ({
+    page = 1,
+    type = null
+  }, {
+    rejectWithValue
+  }) => {
     const token = localStorage.getItem("token");
-    const response = await axios
-      .get("/vendor", {
+    try {
+      const response = await axios.get(`/vendor?page=${page}&size=${itemsPerPage}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .catch((error) => {
-        rejectWithValue(error.response.data.message);
       });
-    // console.log(response);
-    if (response.data.data) {
-      return response.data.data;
-    } else {
-      return rejectWithValue("Invalid email or password");
+      console.log("response uhuy", response.data.data);
+      console.log("page", response);
+      return {
+        ...response.data,
+        type
+      }; // Mengembalikan seluruh response untuk mendapatkan total item
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
 
 export const getProductByVendorId = createAsyncThunk(
   "vendor/getProductByVendorId",
-  async (id, { rejectWithValue }) => {
+  async (id, {
+    rejectWithValue
+  }) => {
     const token = localStorage.getItem("token");
     const response = await axios
       .get(`/vendor/${id}/products`, {
@@ -36,7 +48,7 @@ export const getProductByVendorId = createAsyncThunk(
       .catch((error) => {
         rejectWithValue(error.response.data.message);
       });
-    console.log("response uhuy" ,response);
+
     if (response.data.data) {
       return response.data.data;
     } else {
@@ -48,13 +60,13 @@ export const getProductByVendorId = createAsyncThunk(
 
 export const approveVendor = createAsyncThunk(
   "vendor/approvedVendor",
-  async (id, { rejectWithValue }) => {
+  async (id, {
+    rejectWithValue
+  }) => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.put(
-        `/vendor/${id}/approve`,
-        {},
-        {
+        `/vendor/${id}/approve`, {}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -67,7 +79,7 @@ export const approveVendor = createAsyncThunk(
       }
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "An error occurred"
+        error.response.data.message || "An error occurred"
       );
     }
   }
@@ -81,10 +93,16 @@ const vendorSlice = createSlice({
     selectedVendor: null,
     productSelected: null,
     status: "",
+    currentPage: 1,
+    totalPages: 0,
+    totalItems: 0
   },
   reducers: {
     setSelectedVendor: (state, action) => {
       state.selectedVendor = action.payload;
+    },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -92,12 +110,22 @@ const vendorSlice = createSlice({
       .addCase(getAllVendors.fulfilled, (state, action) => {
         state.status = "success";
         if (action.payload) {
-          state.vendors_pending = action.payload.filter(
+          console.log("action.payload.data", action.payload.data);
+          state.totalItems = action.payload.pagingResponse.count;
+          console.log("totalItems", state.totalItems);
+
+
+          state.currentPage = action.payload.pagingResponse.page;
+          // console.log("vendors", vendors)
+          state.vendors_pending = action.payload.data.filter(
             (vendor) => vendor.status === "PENDING"
           );
-          state.vendors_active = action.payload.filter(
+          state.vendors_active = action.payload.data.filter(
             (vendor) => vendor.status === "ACTIVE"
           );
+          state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage);
+
+
         }
       })
       .addCase(getProductByVendorId.fulfilled, (state, action) => {
@@ -129,5 +157,8 @@ const vendorSlice = createSlice({
   },
 });
 
-export const { setSelectedVendor } = vendorSlice.actions;
+export const {
+  setSelectedVendor,
+  setCurrentPage
+} = vendorSlice.actions;
 export default vendorSlice.reducer;
