@@ -13,10 +13,10 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const { isLoggedIn, user, error } = useSelector((state) => state.auth);
 
-    const { register, handleSubmit, formState: { errors } } = useForm(); // Menggunakan useForm dan menambahkan error handling
+    const { register, handleSubmit, formState: { errors } } = useForm(); 
 
     useEffect(() => {
-        if (isLoggedIn) navigate("/");
+        if (isLoggedIn) navigate("/dashboard");
     }, [isLoggedIn]);
 
     const handleLogin = (data) => {
@@ -46,13 +46,13 @@ const LoginPage = () => {
                       Your Email
                     </label>
                     <input
-                      type="email" // Ubah menjadi "email" agar validasi HTML otomatis
-                      {...register("email", { required: "Email is required" })} // Menggunakan register untuk mengikat input
+                      type="email" 
+                      {...register("email", { required: "Email is required" })} 
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 text-black"
                       placeholder="Enter your email"
                     />
-                    {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>} {/* Tampilkan pesan error */}
+                    {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>} 
                   </div>
                   <div>
                     <label
@@ -63,12 +63,12 @@ const LoginPage = () => {
                     </label>
                     <input
                       type="password"
-                      {...register("password", { required: "Password is required" })} // Menggunakan register untuk mengikat input
+                      {...register("password", { required: "Password is required" })} 
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 text-black"
                     />
-                    {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>} {/* Tampilkan pesan error */}
+                    {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>} 
                   </div>
                   <button
                     type="submit"

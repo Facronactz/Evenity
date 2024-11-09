@@ -1,12 +1,14 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
+const itemsPerPage = 8;
+
 export const getEventDetail = createAsyncThunk(
     "event/getEventDetail",
-    async (_, {rejectWithValue}) => {
+    async ({page=1}, {rejectWithValue}) => {
         const token = localStorage.getItem("token");
         const response = await axios
-            .get(`/event/all`, {
+            .get(`/event/all?page=${page}&size=${itemsPerPage}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -14,9 +16,9 @@ export const getEventDetail = createAsyncThunk(
             .catch((error) => {
                 rejectWithValue(error.response.data.message);
             });
-        console.log(response);
-        if (response.data.data) {
-            return response.data.data;
+        // console.log("response",response);
+        if (response.data) {
+            return response.data;
         } else {
             return rejectWithValue("Invalid email or password");
         }
@@ -27,21 +29,32 @@ export const getEventDetail = createAsyncThunk(
 const eventSlice = createSlice({
     name: "event",
     initialState: {
-        event: null,
+        event: [],
         status: "",
         error: null,
-        selectedEvent: null
+        selectedEvent: null,
+        currentPage: 1,
+        totalPages: 0,
+        totalItems: 0
     },
     reducers: {
         setSelectedEvent: (state, action) => {
             state.selectedEvent = action.payload;
-        }
+        },
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(getEventDetail.fulfilled, (state, action) => {
                 state.status = "success";
-                state.event = action.payload;
+                state.totalItems = action.payload.pagingResponse.count;
+                state.currentPage = action.payload.pagingResponse.page;
+                // console.log("responseData", action.payload.data);
+                state.event = action.payload.data;
+                // console.log("event", state.event);
+                state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage);
             })
             .addCase(getEventDetail.rejected, (state, action) => {
                 state.status = "failed";
@@ -56,5 +69,5 @@ const eventSlice = createSlice({
     },
 });
 
-export const {setSelectedEvent} = eventSlice.actions;
+export const {setSelectedEvent, setCurrentPage} = eventSlice.actions;
 export default eventSlice.reducer;

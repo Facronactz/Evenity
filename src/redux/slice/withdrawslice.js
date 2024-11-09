@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const itemsPerPage = 4
 
 export const getAllWithdraws = createAsyncThunk(
     'withdraw/getAllWithdraws', 
-    async (_, {rejectWithValue}) => {
+    async ({page = 1}, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/transaction/withdraw/request')
+            const response = await axios.get(`/transaction/withdraw/request?page=${page}&size=${itemsPerPage}`)
             console.log(response)
-            return response.data.data
+            return response.data
         } catch (error) {
             rejectWithValue(error)
         }
@@ -19,11 +20,17 @@ const withdrawSlice = createSlice({
     initialState : {
         withdrawRequests : [],
         selectedWithdrawRequest : null,
-        status : "",      
+        status : "",
+        currentPage : 1,
+        totalItems : 0,
+        totalPages : 0   
     },
     reducers : {
         setSelectedWithdrawRequest : (state, action) => {
             state.selectedCustomer = action.payload
+        },
+        setCurrentPage : (state, action) => {
+            state.currentPage = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -33,7 +40,10 @@ const withdrawSlice = createSlice({
             })
             .addCase(getAllWithdraws.fulfilled, (state, action) => {
                 state.status = "success"
-                state.customers = action.payload
+                state.customers = action.payload.data
+                state.totalItems = action.payload.pagingResponse.count
+                state.currentPage = action.payload.pagingResponse.page
+                state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage)
             })
             .addCase(getAllWithdraws.rejected, (state, action) => {
                 state.status = "failed"
@@ -42,6 +52,6 @@ const withdrawSlice = createSlice({
     }
 })
 
-export const { setSelectedWithdrawRequest } = withdrawSlice.actions
+export const { setSelectedWithdrawRequest, setCurrentPage } = withdrawSlice.actions
 
 export default withdrawSlice.reducer
