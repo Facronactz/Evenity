@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "*",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Credentials",
@@ -17,7 +17,15 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+        },
+        {
+          "key": "Vary",
+          "value": "Origin"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
