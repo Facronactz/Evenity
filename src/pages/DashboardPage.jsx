@@ -5,7 +5,7 @@ import { fetchDashboardSummary } from "@/redux/slice/dashboardSlice";
 import LeadStatsChart from "../components/dashboard/LeadStatsChart";
 
 const StatCard = ({ title, value, percentage, icon, color }) => (
-  <div className="w-full">
+  <div className="w-full transition hover:scale-105">
     <div className="relative flex flex-col min-w-0 break-words bg-white rounded shadow-lg">
       <div className="flex-auto p-4">
         <div className="flex flex-wrap items-center">
@@ -46,7 +46,7 @@ const StatCard = ({ title, value, percentage, icon, color }) => (
 );
 
 const StatCardHead = ({ title, value, percentage, icon, color }) => (
-  <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div className="w-full lg:w-6/12 xl:w-3/12 px-4 transition hover:scale-105">
     <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
       <div className="flex-auto p-4">
         <div className="flex flex-wrap">
