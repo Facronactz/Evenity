@@ -231,7 +231,7 @@ const EventsPage = () => {
               <div
                 key={event.id}
                 onClick={() => handleEventDetail(event)}
-                className="px-12 py-8 bg-[rgb(0,242,121)] text-white rounded-[40px] shadow-xl cursor-pointer text-left flex flex-col justify-between"
+                className="px-12 py-8 bg-[rgb(0,242,121)] text-white rounded-[40px] shadow-xl cursor-pointer text-left flex flex-col justify-between transition hover:scale-105"
               >
                 <div>
                   <h1 className="text-4xl font-bold mb-4">{event.name}</h1>

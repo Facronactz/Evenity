@@ -63,7 +63,6 @@ const LandingPage = () => {
     >
       <div className="container max-w-screen-xl mx-auto px-4 pt-24 lg:pt-48">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
-          {/* Konten Kiri */}
           <motion.div
             variants={itemVariants}
             className="text-center lg:text-left space-y-6"
@@ -95,7 +94,6 @@ const LandingPage = () => {
               variants={itemVariants}
               className="flex justify-center lg:justify-start space-x-4"
             >
-              {/* Tombol Download */}
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -138,7 +136,6 @@ const LandingPage = () => {
             </motion.div>
           </motion.div>
 
-          {/* Ilustrasi Kanan */}
           <motion.div variants={itemVariants} className="flex justify-center">
             <motion.img
               initial={{ scale: 0.8, opacity: 0 }}
@@ -154,7 +151,6 @@ const LandingPage = () => {
           </motion.div>
         </div>
 
-        {/* Partner Section */}
         <motion.div
           variants={itemVariants}
           className="mt-16 py-10 bg-white/50 backdrop-blur-sm rounded-2xl"

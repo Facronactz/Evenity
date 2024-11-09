@@ -4,29 +4,19 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const itemsPerPage = 6;
-
 export const getAllVendors = createAsyncThunk(
   "vendor/getAllVendors",
-  async ({
-    page = 1,
-    type = null
-  }, {
+  async (_, {
     rejectWithValue
   }) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`/vendor?page=${page}&size=${itemsPerPage}`, {
+      const response = await axios.get(`/vendor`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response uhuy", response.data.data);
-      console.log("page", response);
-      return {
-        ...response.data,
-        type
-      }; // Mengembalikan seluruh response untuk mendapatkan total item
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
@@ -39,27 +29,21 @@ export const getProductByVendorId = createAsyncThunk(
     rejectWithValue
   }) => {
     const token = localStorage.getItem("token");
-    const response = await axios
-      .get(`/vendor/${id}/products`, {
+    try {
+      const response = await axios.get(`/vendor/${id}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .catch((error) => {
-        rejectWithValue(error.response.data.message);
       });
-
-    if (response.data.data) {
       return response.data.data;
-    } else {
-      return rejectWithValue("Invalid email or password");
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
 
-
 export const approveVendor = createAsyncThunk(
-  "vendor/approvedVendor",
+  "vendor/approveVendor",
   async (id, {
     rejectWithValue
   }) => {
@@ -72,15 +56,30 @@ export const approveVendor = createAsyncThunk(
           },
         }
       );
-      if (response.data.data) {
-        return response.data.data;
-      } else {
-        return rejectWithValue("Invalid data response");
-      }
+      return response.data.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response.data.message || "An error occurred"
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const disableVendor = createAsyncThunk(
+  "vendor/disableVendor",
+  async (id, {
+    rejectWithValue
+  }) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `/vendor/${id}/reject`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -88,77 +87,53 @@ export const approveVendor = createAsyncThunk(
 const vendorSlice = createSlice({
   name: "vendor",
   initialState: {
-    vendors_pending: [],
-    vendors_active: [],
+    vendors: [],
     selectedVendor: null,
     productSelected: null,
     status: "",
-    currentPage: 1,
-    totalPages: 0,
-    totalItems: 0
   },
   reducers: {
     setSelectedVendor: (state, action) => {
       state.selectedVendor = action.payload;
-    },
-    setCurrentPage: (state, action) => {
-      state.currentPage = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getAllVendors.fulfilled, (state, action) => {
         state.status = "success";
-        if (action.payload) {
-          console.log("action.payload.data", action.payload.data);
-          state.totalItems = action.payload.pagingResponse.count;
-          console.log("totalItems", state.totalItems);
-
-
-          state.currentPage = action.payload.pagingResponse.page;
-          // console.log("vendors", vendors)
-          state.vendors_pending = action.payload.data.filter(
-            (vendor) => vendor.status === "PENDING"
-          );
-          state.vendors_active = action.payload.data.filter(
-            (vendor) => vendor.status === "ACTIVE"
-          );
-          state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage);
-
-
-        }
+        state.vendors = action.payload;
       })
       .addCase(getProductByVendorId.fulfilled, (state, action) => {
-        state.status = "success";
         state.productSelected = action.payload;
       })
       .addCase(approveVendor.fulfilled, (state, action) => {
-        const approvedVendor = action.payload;
-        state.vendors_pending = state.vendors_pending.filter(
-          (vendor) => vendor.id !== approvedVendor.id
-        );
-        state.vendors_active.push(approvedVendor);
-        if (state.selectedVendor?.id === approvedVendor.id) {
-          state.selectedVendor = approvedVendor;
+        const index = state.vendors.findIndex(v => v.id === action.payload.id);
+        if (index !== -1) {
+          state.vendors[index] = action.payload;
         }
       })
-      .addMatcher(
-        (action) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.status = "failed";
+      .addCase(disableVendor.fulfilled, (state, action) => {
+        const index = state.vendors.findIndex(v => v.id === action.payload.id);
+        if (index !== -1) {
+          state.vendors[index] = action.payload;
         }
-      )
+      })
       .addMatcher(
         (action) => action.type.endsWith("/pending"),
         (state) => {
           state.status = "loading";
+        }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith("/rejected"),
+        (state) => {
+          state.status = "failed";
         }
       );
   },
 });
 
 export const {
-  setSelectedVendor,
-  setCurrentPage
+  setSelectedVendor
 } = vendorSlice.actions;
 export default vendorSlice.reducer;

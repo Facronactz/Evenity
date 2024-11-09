@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllTransactions,
   setSelectedTransaction,
+  forwardPaidVendor,
 } from "@/redux/slice/transactionSlice";
 import { setupAxios } from "@/config/axiosConfig";
 import moment from "moment";
@@ -24,11 +25,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 const TransactionPage = () => {
   setupAxios();
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   const openDialog = () => setIsOpen(true);
-
   const closeDialog = () => setIsOpen(false);
 
   const dispatch = useDispatch();
@@ -60,7 +60,6 @@ const TransactionPage = () => {
   };
 
   const handlePageChange = (page) => {
-    console.log("page", page);
     dispatch(
       getAllTransactions({
         page: page,
@@ -69,21 +68,18 @@ const TransactionPage = () => {
   };
 
   const handleSearchChange = (e) => {
-    console.log(e.target.value);
     setSearchQuery(e.target.value);
   };
 
   const fetchSearchResults = async () => {
     if (searchQuery.trim() === "") {
-      setSearchResults([]); 
+      setSearchResults([]);
       return;
     }
 
     try {
       const response = await axios.get(`/auth/search?name=${searchQuery}`);
-      console.log("response", response.data);
       setSearchResults(response.data);
-      console.log("searchResults", searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
@@ -222,15 +218,30 @@ const TransactionPage = () => {
     );
   };
 
+  const handleForwardPayment = (item) => {
+    try {
+      console.log("item", item);
+      dispatch(forwardPaidVendor(item.invoiceDetailId));
+      dispatch(getAllTransactions({ page: currentPage }));
+      closeDialog();
+    } catch (error) {
+      console.error("Error forwarding payment:", error);
+    }
+  };
+
+  const filteredTransactions = transaction.filter(
+    (t) => t.paymentStatus === "COMPLETE" || t.paymentStatus === "UNPAID"
+  );
+
   return (
     <div className="container mx-auto h-[100vh] pt-20">
       <h1 className="py-10 text-5xl font-bold text-center">Transaction</h1>
       <div className="grid gap-8 mb-20">
-        {transaction.map((transaction) => (
+        {filteredTransactions.map((transaction) => (
           <div
             key={transaction.id}
             onClick={() => handleSelectDetail(transaction)}
-            className="px-12 py-2 max-w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left"
+            className="px-12 py-2 max-w-full bg-[#F4F4F4] text-black rounded-[40px] shadow-xl cursor-pointer text-left transition hover:scale-105"
           >
             <div className="flex text-[#00AA55] header-detail">
               <h1 className="text-2xl mb-4 w-1/2">
@@ -381,38 +392,64 @@ const TransactionPage = () => {
             <Table className="w-full">
               <TableHeader className="font-bold text-white bg-[#00AA55] rounded-full">
                 <TableRow className="">
-                  <TableHead className="text-white">
+                  <TableHead className="text-white text-center">
                     Invoice Detail ID
                   </TableHead>
-                  <TableHead className="text-white">Vendor Name</TableHead>
-                  <TableHead className="text-white w-[200px]">
+                  <TableHead className="text-white text-center">
+                    Vendor Name
+                  </TableHead>
+                  <TableHead className="text-white w-[200px] text-center">
                     Product Name
                   </TableHead>
-                  <TableHead className="text-white">Quantity</TableHead>
-                  <TableHead className="text-white">Price / Qty</TableHead>
-                  <TableHead className="text-right text-white">Total</TableHead>
+                  <TableHead className="text-white text-center">
+                    Quantity
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Price / Qty
+                  </TableHead>
+                  <TableHead className="text-center text-white">
+                    Total
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Forward
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="overflow-y-scroll h-5">
                 {selectedTransaction &&
                   selectedTransaction?.invoiceDetailResponseList.map(
                     (item, index) => (
-                      <TableRow key={index}>
+                      <TableRow
+                        key={index}
+                        className="border-b-2 flex-row items-center"
+                      >
                         <TableCell className="text-left">
                           {item.invoiceDetailId}
                         </TableCell>
-                        <TableCell className="text-left">
+                        <TableCell className="text-center">
                           {item.vendorName}
                         </TableCell>
-                        <TableCell className="text-left">
+                        <TableCell className="text-center">
                           {item.productName}
                         </TableCell>
-                        <TableCell className="text-left">{item.qty}</TableCell>
-                        <TableCell className="text-left">
+                        <TableCell className="text-center">
+                          {item.qty}
+                        </TableCell>
+                        <TableCell className="text-center">
                           {item.cost / item.qty}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                           {item.cost}
+                        </TableCell>
+                        <TableCell className="text-center pb-5">
+                          {item?.forwardPaymentStatus !== "COMPLETE" && (
+                            <button
+                              className="mt-4 bg-[#00AA55] text-white py-2 px-4 rounded"
+                              onClick={() => handleForwardPayment(item)}
+                            >
+                              Forward Payment
+                            </button>
+                          )}
                         </TableCell>
                       </TableRow>
                     )
