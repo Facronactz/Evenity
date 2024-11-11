@@ -41,7 +41,7 @@ const UsersPage = () => {
     );
 
     useEffect(() => {
-        dispatch(getAllCustomers({page: 1}));
+        dispatch(getAllCustomers());
     }, [dispatch]);
 
     // Reset to first page when search or filter changes
