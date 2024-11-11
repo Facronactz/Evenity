@@ -3,6 +3,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchDashboardSummary} from "@/redux/slice/dashboardSlice";
 
 import LeadStatsChart from "../components/dashboard/LeadStatsChart";
+import {
+    FaArrowTrendUp,
+    FaCalendar,
+    FaCalendarCheck,
+    FaCalendarDay,
+    FaCalendarDays,
+    FaMoneyBillWave
+} from "react-icons/fa6";
+import {HiUserGroup} from "react-icons/hi2";
+import {MdPeopleAlt} from "react-icons/md";
+import {BsPersonFillCheck, BsPersonFillDash, BsPersonFillExclamation} from "react-icons/bs";
+import {GiPayMoney, GiReceiveMoney} from "react-icons/gi";
 
 const StatCard = ({title, value, percentage, icon, color}) => (
     <div className="w-full transition hover:scale-105">
@@ -19,7 +31,9 @@ const StatCard = ({title, value, percentage, icon, color}) => (
                         <div
                             className={`text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full ${color}`}
                         >
+                            <span className="overflow-visible text-3xl">
                             {icon}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -57,7 +71,9 @@ const StatCardHead = ({title, value, percentage, icon, color}) => (
                     <div className="relative w-auto pl-4 flex-initial">
                         <div
                             className={`text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full ${color}`}>
+                            <span className={`text-4xl overflow-visible`}>
                             {icon}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +114,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <div className=" bg-blueGray-100 h-screen">
+            <div className=" bg-blueGray-100">
                 <div className=" bg-[#00AA55] pt-32 pb-32 mx-auto w-full">
                     <div className=" md:px-10 mx-auto w-full">
                         <div>
@@ -107,7 +123,7 @@ export default function Dashboard() {
                                     title="Event this month"
                                     value={summary.eventThisMonth}
                                     // percentage={3.48}
-                                    icon={<i className="far fa-chart-bar"></i>}
+                                    icon={<FaCalendar/>}
                                     color="bg-red-500"
                                 />
 
@@ -115,7 +131,7 @@ export default function Dashboard() {
                                     title="Total Vendor"
                                     value={summary.vendorTotal}
                                     // percentage={-3.48}
-                                    icon={<i className="fas fa-chart-pie"></i>}
+                                    icon={<HiUserGroup/>}
                                     color="bg-orange-500"
                                 />
 
@@ -123,7 +139,7 @@ export default function Dashboard() {
                                     title="Total Customer"
                                     value={summary.customerTotal}
                                     // percentage={-1.1}
-                                    icon={<i className="fas fa-users"></i>}
+                                    icon={<MdPeopleAlt/>}
                                     color="bg-pink-500"
                                 />
 
@@ -131,7 +147,7 @@ export default function Dashboard() {
                                     title="Total Income"
                                     value={`Rp ${summary?.grossIncomeAllTime?.toLocaleString()}`}
                                     // percentage={12}
-                                    icon={<i className="fas fa-percent"></i>}
+                                    icon={<FaMoneyBillWave/>}
                                     color="bg-teal-500"
                                 />
                             </div>
@@ -153,28 +169,28 @@ export default function Dashboard() {
                                             title="Income Month"
                                             value={`Rp ${summary?.grossIncomeThisMonth?.toLocaleString()}`}
                                             // percentage={12}
-                                            icon={<i className="fas fa-money-bill-wave"></i>}
+                                            icon={<FaArrowTrendUp/>}
                                             color="bg-green-500"
                                         />
                                         <StatCard
                                             title="Revenue Month"
                                             value={`Rp ${summary?.revenueThisMonth?.toLocaleString()}`}
                                             // percentage={12}
-                                            icon={<i className="fas fa-chart-line"></i>}
+                                            icon={<FaArrowTrendUp/>}
                                             color="bg-indigo-500"
                                         />
                                         <StatCard
                                             title="Approved Withdraw"
                                             value={`Rp ${summary?.approvedWithdrawalThisMonth?.toLocaleString()}`}
                                             // percentage={12}
-                                            icon={<i className="fas fa-hand-holding-usd"></i>}
+                                            icon={<GiPayMoney/>}
                                             color="bg-teal-500"
                                         />
                                         <StatCard
                                             title="Total Revenue"
                                             value={`Rp ${summary?.revenueAllTime?.toLocaleString()}`}
                                             // percentage={12}
-                                            icon={<i className="fas fa-globe"></i>}
+                                            icon={<GiReceiveMoney/>}
                                             color="bg-orange-500"
                                         />
                                     </div>
@@ -191,21 +207,21 @@ export default function Dashboard() {
                                             title="Total Event"
                                             value={summary.totalEvent}
                                             // percentage={3.48}
-                                            icon={<i className="far fa-chart-bar"></i>}
+                                            icon={<FaCalendarDays/>}
                                             color="bg-blue-500"
                                         />
                                         <StatCard
                                             title="Finish Event"
                                             value={summary.eventInThePast}
                                             // percentage={-3.48}
-                                            icon={<i className="fas fa-check-circle"></i>}
+                                            icon={<FaCalendarCheck/>}
                                             color="bg-green-500"
                                         />
                                         <StatCard
                                             title="Future Event"
                                             value={summary.eventInTheFuture}
                                             // percentage={-1.1}
-                                            icon={<i className="fas fa-calendar-alt"></i>}
+                                            icon={<FaCalendarDay/>}
                                             color="bg-purple-500"
                                         />
                                     </div>
@@ -224,21 +240,21 @@ export default function Dashboard() {
                                             title="Approved"
                                             value={summary.approvedVendor}
                                             // percentage={12}
-                                            icon={<i className="fas fa-user-check"></i>}
+                                            icon={<BsPersonFillCheck/>}
                                             color="bg-blue-500"
                                         />
                                         <StatCard
                                             title="Pending"
                                             value={summary.pendingVendor}
                                             // percentage={12}
-                                            icon={<i className="fas fa-user-clock"></i>}
+                                            icon={<BsPersonFillExclamation/>}
                                             color="bg-yellow-500"
                                         />
                                         <StatCard
                                             title="Rejected"
                                             value={summary.rejectedVendor}
                                             // percentage={12}
-                                            icon={<i className="fas fa-user-times"></i>}
+                                            icon={<BsPersonFillDash/>}
                                             color="bg-red-500"
                                         />
                                     </div>

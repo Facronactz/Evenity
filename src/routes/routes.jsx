@@ -18,6 +18,8 @@ import EventsPage from "../pages/EventsPage";
 import WithdrawPage from "../pages/WithdrawPage";
 import TransactionPage from "../pages/TransactionPage";
 import UsersPage from "../pages/UsersPage";
+import PaymentLoading from "@/pages/misc/PaymentLoading.jsx";
+import NotFoundPage from "@/pages/NotFoundPage.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -82,6 +84,14 @@ export const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "/for-mobile/payment/loading",
+        element: <PaymentLoading/>
+    },
+    {
+        path: "*",
+        element: <NotFoundPage/>,
+    }
 ]);
 
 export default router;
