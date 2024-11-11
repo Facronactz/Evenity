@@ -81,7 +81,7 @@ const UsersPage = () => {
 
   // Pagination Render
   const renderPagination = () => {
-    if (totalPages <= 1) return null;
+    // if (totalPages <= 1) return null;
 
     const renderPageButtons = () => {
       const buttons = [];

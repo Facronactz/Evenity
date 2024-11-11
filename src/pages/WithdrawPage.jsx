@@ -24,7 +24,7 @@ const WithdrawPage = () => {
 
   // Sorting dan Filtering
   const processedWithdraws = useMemo(() => {
-    let filtered = withdrawRequests;
+    let filtered = [...withdrawRequests];
 
     // Filter berdasarkan status
     if (statusFilter !== "ALL") {
@@ -107,115 +107,119 @@ const WithdrawPage = () => {
   };
 
   return (
-    <div className="container mx-auto h-screen pt-20 px-4">
-      <h1 className="py-10 text-4xl font-bold text-center text-gray-800">
-        Withdraw Requests
-      </h1>
+    <div className="min-h-screen flex flex-col bg-white">
+      <div className=" container mx-auto flex-grow pt-20 px-4">
+        <div className="flex flex-col items-center">
+        <h1 className="py-10 text-4xl font-bold text-center text-gray-800">
+          Withdraw Requests
+        </h1>
 
-      {/* Status Filter */}
-      <div className="flex justify-center space-x-4 mb-8">
-        {["ALL", "PENDING", "APPROVED", "REJECTED"].map((status) => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status)}
-            className={`
-              px-4 py-2 rounded-full transition duration-300
-              ${
-                statusFilter === status
-                  ? "bg-[#00AA55] text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }
-            `}
-          >
-            {status}
-          </button>
-        ))}
-      </div>
+        {/* Status Filter */}
+        <div className="flex justify-center space-x-4 mb-8">
+          {["ALL", "PENDING", "APPROVED", "REJECTED"].map((status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={`
+                px-4 py-2 rounded-full transition duration-300
+                ${
+                  statusFilter === status
+                    ? "bg-[#00AA55] text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }
+              `}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 pb-20">
-        {processedWithdraws.map((withdraw) => (
-          <div
-            key={withdraw.id}
-            onClick={() => openWithdrawDetail(withdraw)}
-            className="px-6 py-4 bg-[#F4F4F4] text-black rounded-3xl shadow-lg cursor-pointer transform transition hover:scale-105"
-          >
-            <div className="flex justify-between text-[#00AA55] mb-4">
-              <h2 className="text-xl font-semibold">
-                {new Date(withdraw.createdDate).toLocaleDateString()}
-              </h2>
-              <p className="text-xl font-bold">
-                Rp {withdraw.amount.toLocaleString()}
-              </p>
-            </div>
-            <div className="border-b border-gray-300 my-2"></div>
-            <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-bold">{withdraw.vendorName}</h3>
-              {getStatusBadge(withdraw.approvalStatus)}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Modal Detail */}
-      {isOpen && selectedWithdraw && (
-        <Modal
-          title="Withdraw Detail"
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          closeDialog={() => setIsOpen(false)}
-        >
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">
-                {selectedWithdraw.vendorName}
-              </h2>
-              {getStatusBadge(selectedWithdraw.approvalStatus)}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-gray-600">Vendor ID</p>
-                <p className="font-semibold">{selectedWithdraw.vendorId}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Amount</p>
-                <p className="font-semibold">
-                  Rp {selectedWithdraw.amount.toLocaleString()}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 pb-20">
+          {processedWithdraws.map((withdraw) => (
+            <div
+              key={withdraw.id}
+              onClick={() => openWithdrawDetail(withdraw)}
+              className="px-6 py-4 bg-[#F4F4F4] text-black rounded-3xl shadow-lg cursor-pointer transform transition hover:scale-105"
+            >
+              <div className="flex justify-between text-[#00AA55] mb-4">
+                <h2 className="text-xl font-semibold">
+                  {new Date(withdraw.createdDate).toLocaleDateString()}
+                </h2>
+                <p className="text-xl font-bold">
+                  Rp {withdraw.amount.toLocaleString()}
                 </p>
               </div>
-              <div>
-                <p className="text-gray-600">Email</p>
-                <p className="font-semibold">{selectedWithdraw.userName}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Request Date</p>
-                <p className="font-semibold">
-                  {new Date(selectedWithdraw.createdDate).toLocaleString()}
-                </p>
+              <div className="border-b border-gray-300 my-2"></div>
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl font-bold">{withdraw.vendorName}</h3>
+                {getStatusBadge(withdraw.approvalStatus)}
               </div>
             </div>
+          ))}
+        </div>
 
-            {selectedWithdraw.approvalStatus === "PENDING" && (
-              <div className="flex justify-center space-x-4 mt-6">
-                <button
-                  onClick={handleApprove}
-                  className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={handleReject}
-                  className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 transition"
-                >
-                  Reject
-                </button>
+        {/* Modal Detail */}
+        {isOpen && selectedWithdraw && (
+          <Modal
+            title="Withdraw Detail"
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            closeDialog={() => setIsOpen(false)}
+          >
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">
+                  {selectedWithdraw.vendorName}
+                </h2>
+                {getStatusBadge(selectedWithdraw.approvalStatus)}
               </div>
-            )}
-          </div>
-        </Modal>
-      )}
 
-      {renderPagination()}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-600">Vendor ID</p>
+                  <p className="font-semibold">{selectedWithdraw.vendorId}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Amount</p>
+                  <p className="font-semibold">
+                    Rp {selectedWithdraw.amount.toLocaleString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Email</p>
+                  <p className="font-semibold">{selectedWithdraw.userName}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Request Date</p>
+                  <p className="font-semibold">
+                    {new Date(selectedWithdraw.createdDate).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              {selectedWithdraw.approvalStatus === "PENDING" && (
+                <div className="flex justify-center space-x-4 mt-6">
+                  <button
+                    onClick={handleApprove}
+                    className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={handleReject}
+                    className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 transition"
+                  >
+                    Reject
+                  </button>
+                </div>
+              )}
+            </div>
+          </Modal>
+        )}
+
+        {renderPagination()}
+      </div>
     </div>
   );
 };
