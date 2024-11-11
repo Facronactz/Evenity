@@ -8,20 +8,11 @@ const itemsPerPage = 10; // Sesuaikan dengan kebutuhan
 
 export const getAllWithdraws = createAsyncThunk(
     'withdraw/getAllWithdraws',
-    async ({
-        page = 1,
-        status = '' // Tambahkan parameter status untuk filtering di backend
-    }, {
+    async (_, {
         rejectWithValue
     }) => {
         try {
-            const response = await axios.get(`/transaction/withdraw/request`, {
-                params: {
-                    page,
-                    size: itemsPerPage,
-                    status // Optional parameter untuk filter status
-                }
-            });
+            const response = await axios.get(`/transaction/withdraw/request`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || {

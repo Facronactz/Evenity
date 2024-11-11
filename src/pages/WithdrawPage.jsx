@@ -13,13 +13,17 @@ const WithdrawPage = () => {
   const [selectedWithdraw, setSelectedWithdraw] = useState(null);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
 
-  const { withdrawRequests, status, totalPages, currentPage } = useSelector(
+  const { withdrawRequests } = useSelector(
     (state) => state.withdraw
   );
 
+
+
   useEffect(() => {
-    dispatch(getAllWithdraws({ page: currentPage }));
+    dispatch(getAllWithdraws());
   }, [dispatch, currentPage]);
 
   // Sorting dan Filtering
@@ -43,6 +47,12 @@ const WithdrawPage = () => {
       return statusOrder[a.approvalStatus] - statusOrder[b.approvalStatus];
     });
   }, [withdrawRequests, statusFilter]);
+
+  const totalPages = Math.ceil(processedWithdraws.length / itemsPerPage);
+  const paginatedWithdraws = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return processedWithdraws.slice(startIndex, startIndex + itemsPerPage);
+  }, [processedWithdraws, currentPage, itemsPerPage]);
 
   // Handler untuk membuka modal detail
   const openWithdrawDetail = (withdraw) => {
@@ -88,7 +98,8 @@ const WithdrawPage = () => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
-              onClick={() => dispatch(getAllWithdraws({ page }))}
+              // onClick={() => dispatch(getAllWithdraws({ page }))}
+              onClick={() => setCurrentPage(page)} 
               className={`
                 px-4 py-2 rounded-full 
                 ${
@@ -136,7 +147,7 @@ const WithdrawPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 pb-20">
-          {processedWithdraws.map((withdraw) => (
+          {paginatedWithdraws.map((withdraw) => (
             <div
               key={withdraw.id}
               onClick={() => openWithdrawDetail(withdraw)}
