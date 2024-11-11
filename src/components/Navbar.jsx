@@ -7,11 +7,11 @@ import {AnimatePresence, motion} from "framer-motion";
 
 const link = [
     {link: "Dashboard", url: "/dashboard"},
-    {link: "Vendor", url: "/vendor"},
-    {link: "Event", url: "/event"},
-    {link: "User", url: "/user"},
-    {link: "Withdraw", url: "/withdraw"},
-    {link: "Transaction", url: "/transaction"},
+    {link: "Vendors", url: "/vendor"},
+    {link: "Events", url: "/event"},
+    {link: "Customers", url: "/user"},
+    {link: "Withdrawals", url: "/withdraw"},
+    {link: "Transactions", url: "/transaction"},
 ];
 
 const Navbar = () => {
