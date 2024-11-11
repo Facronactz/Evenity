@@ -49,7 +49,7 @@ const LoginPage = () => {
                       type="email" 
                       {...register("email", { required: "Email is required" })} 
                       id="email"
-                      className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 text-black"
+                      className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-white text-black"
                       placeholder="Enter your email"
                     />
                     {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>} 
