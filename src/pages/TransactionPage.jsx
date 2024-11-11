@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { FaFilter } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,10 @@ const TransactionPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState("ALL");
+
+
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
@@ -230,12 +235,114 @@ const TransactionPage = () => {
   };
 
   const filteredTransactions = transaction.filter(
-    (t) => t.paymentStatus === "COMPLETE" || t.paymentStatus === "UNPAID"
+    (t) => {
+      const matchesSearch = t.customerName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+        || t.eventName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+  
+      const matchesStatus =
+        selectedStatus === "ALL" || t.paymentStatus === selectedStatus;
+  
+      return matchesSearch && matchesStatus;
+    }
   );
+
+    const renderFilterDropdown = () => {
+    const statusOptions = [
+      { value: "ALL", label: "All Status" },
+      { value: "COMPLETE", label: "Complete" },
+      { value: "UNPAID", label: "Unpaid" },
+    ];
+
+    return (
+      <div className="relative flex items-center">
+        <button
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="bg-[#00AA55] text-white p-3 rounded-full hover:bg-[#00AA55]/90 transition-colors duration-300 flex items-center justify-center"
+        >
+          <FaFilter className="m-0" />
+        </button>
+
+        {isFilterOpen && (
+          <div
+            className="absolute top-full right-0 mt-2 w-64 bg-white shadow-2xl rounded-2xl border-0 p-6 z-50 
+        ring-4 ring-[#00AA55]/10 backdrop-blur-sm"
+          >
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Status
+              </label>
+              <div className="relative flex items-center">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  className="w-full px-4 py-3 
+                text-gray-900 bg-gray-50 
+                border-2 border-gray-200 
+                rounded-xl 
+                focus:outline-none 
+                focus:ring-2 focus:ring-[#00AA55]/50 
+                focus:border-[#00AA55] 
+                transition duration-300 
+                appearance-none
+                pr-8"
+                >
+                  {statusOptions.map((status) => (
+                    <option
+                      key={status.value}
+                      value={status.value}
+                      className="hover:bg-[#00AA55]/10"
+                    >
+                      {status.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 9l6 6 6-6"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="container mx-auto h-[100vh] pt-20">
       <h1 className="py-10 text-5xl font-bold text-center">Transaction</h1>
+      <div className="relative w-full flex justify-center mb-10 gap-3">
+        <div className="relative w-1/2 group">
+          <input
+            type="text"
+            placeholder="Search…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-4 pr-4 py-3 text-gray-900 bg-white rounded-full border-2 border-gray-300 
+            focus:outline-none focus:border-[#00AA55] focus:ring-2 focus:ring-[#00AA55]/30 
+            transition-all duration-300 ease-in-out 
+            placeholder-gray-400 
+            shadow-sm hover:shadow-md"
+          />
+        </div>
+        {renderFilterDropdown()}
+      </div>
       <div className="grid gap-8 mb-20">
         {filteredTransactions.map((transaction) => (
           <div
