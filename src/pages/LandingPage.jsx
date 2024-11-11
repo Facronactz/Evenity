@@ -97,7 +97,7 @@ const LandingPage = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="/download/android"
+                href="#"
                 className="
                   flex items-center 
                   px-6 py-3 
@@ -116,7 +116,7 @@ const LandingPage = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="/download/ios"
+                href="#"
                 className="
                   flex items-center 
                   px-6 py-3 

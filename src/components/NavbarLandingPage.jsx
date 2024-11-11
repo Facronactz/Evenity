@@ -204,14 +204,19 @@
                   >
                     <Link
                       to="/login"
-                      className="
+                      className={`
                         ml-4 px-4 py-2 
                         font-medium rounded-full 
-                        border border-[#00AA55] 
-                        text-[#00AA55] 
-                        hover:bg-[#00AA55] hover:text-white 
+                        border
+                        ${
+                          isAboutPage
+                            ? (isScrolled
+                                ? "border-[#00AA55] text-[#00AA55] hover:bg-[#00AA55] hover:text-white"
+                                : "border-white text-white hover:bg-white hover:text-black")
+                            : "border-[#00AA55] text-[#00AA55] hover:bg-[#00AA55] hover:text-white"
+                        } 
                         transition duration-300
-                      "
+                      `}
                     >
                       Login
                     </Link>
