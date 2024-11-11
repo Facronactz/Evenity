@@ -5,6 +5,10 @@ import { GiCycle } from "react-icons/gi";
 import { MdVerified } from "react-icons/md";
 import { TbBrandFunimation } from "react-icons/tb";
 import { MdAlignHorizontalLeft } from "react-icons/md";
+import aboutImage from "../assets/concert.jpg";
+import eventImage1 from "../assets/bussines-gathering.jpg"; // Gambar event 1
+import eventImage2 from "../assets/konser.jpg"; // Gambar event 2
+import eventImage3 from "../assets/wedding.jpg"; // Gambar event 3
 
 export default function Landing() {
   const containerVariants = {
@@ -41,8 +45,7 @@ export default function Landing() {
         <div
           className="absolute top-0 w-full h-full bg-center bg-cover"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1522158637959-30385a09e0da?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+            backgroundImage: `url(${aboutImage})`,
           }}
         >
           <span className="w-full h-full absolute opacity-75 bg-[#00AA55]/70"></span>
@@ -202,6 +205,66 @@ export default function Landing() {
               </p>
             </div>
           </motion.div>
+
+          {/* Bagian untuk menampilkan event-event yang telah dikerjakan */}
+          <motion.section
+  className="mt-32"
+  variants={containerVariants}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+>
+  <h2 className="text-3xl font-semibold text-center mb-12 text-[#00AA55]">
+    Events We've Organized
+  </h2>
+  <div className="flex flex-wrap justify-center">
+    {[
+      {
+        image: eventImage1,
+        title: "Business Gathering",
+        description: "A dynamic corporate networking event that brought together industry leaders, fostering meaningful connections and strategic partnerships in an innovative, collaborative environment.",
+      },
+      {
+        image: eventImage2,
+        title: "Concert Event",
+        description: "An electrifying musical extravaganza featuring top-tier performers, cutting-edge sound technology, and an immersive audience experience that created unforgettable memories.",
+      },
+      {
+        image: eventImage3,
+        title: "Wedding Ceremony",
+        description: "An exquisite wedding celebration that blended timeless elegance with personal touches, creating a magical day filled with love, joy, and cherished moments for the couple and their guests.",
+      },
+    ].map((event, index) => (
+      <motion.div
+        key={index}
+        variants={itemVariants}
+        className="w-full md:w-4/12 px-4 mb-8"
+      >
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+          <div className="relative">
+            <img
+              src={event.image}
+              alt={event.title}
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-[#00AA55]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div className="p-4">
+            <h4 className="text-xl font-semibold text-gray-800 group-hover:text-[#00AA55] transition-colors duration-300">
+              {event.title}
+            </h4>
+            <p className="mt-2 text-gray-600">
+              {event.description}
+            </p>
+            <div className="mt-4 flex justify-between items-center">
+              <div className="h-1 w-0 bg-[#00AA55] group-hover:w-full transition-all duration-300"></div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</motion.section>
         </div>
       </motion.section>
     </main>
