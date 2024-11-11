@@ -53,7 +53,7 @@ const UsersPage = () => {
   );
 
   useEffect(() => {
-    dispatch(getAllCustomers({ page: 1 }));
+    dispatch(getAllCustomers());
   }, [dispatch]);
 
   // Reset to first page when search or filter changes
@@ -69,11 +69,11 @@ const UsersPage = () => {
   const handleToggleStatus = (customer) => {
     if (customer.status === "ACTIVE") {
       dispatch(disableCustomer(customer.id)).then(() => {
-        dispatch(getAllCustomers({ page: 1 }));
+        dispatch(getAllCustomers());
       });
     } else {
       dispatch(enableCustomer(customer.id)).then(() => {
-        dispatch(getAllCustomers({ page: 1 }));
+        dispatch(getAllCustomers());  
       });
     }
     setIsOpen(false);

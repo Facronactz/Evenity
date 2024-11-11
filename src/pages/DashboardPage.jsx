@@ -98,7 +98,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <div className=" bg-blueGray-100">
+            <div className=" bg-blueGray-100 h-screen">
                 <div className=" bg-[#00AA55] pt-32 pb-32 mx-auto w-full">
                     <div className=" md:px-10 mx-auto w-full">
                         <div>
