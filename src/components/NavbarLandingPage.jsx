@@ -180,26 +180,29 @@ const NavbarLandingPage = () => {
                                             className={`
                           relative px-3 py-2 
                           text-base font-medium 
-                          hover:text-[#00AA55] 
                           transition duration-300 
                           group
                         `}
                                         >
-                                          <span className={location.pathname === link.to ? "text-[#00AA55]" : ""}>
+                                          <span
+                                              className={location.pathname === "/about" ? "text-white" : location.pathname === link.to ? "text-[#00AA55]" : ""}>
                                             {link.label}
                                           </span>
                                             <span
-                                                className="
-                            absolute bottom-0 left-0 w-0 h-0.5 
-                            bg-[#00AA55] 
-                            group-hover:w-full 
-                            transition-all duration-300
-                          "
+                                                className={`
+                                                    absolute bottom-0 left-0 w-0 h-0.5
+                                                    group-hover:w-full
+                                                    transition-all duration-300
+                                                    ${
+                                                    location.pathname === "/about"
+                                                        ? "bg-white"
+                                                        : "bg-[#00AA55]"}
+                                                    `}
                                             />
                                             {location.pathname === link.to && (
                                                 <motion.div
                                                     layoutId="underline"
-                                                    className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#00AA55]"
+                                                    className={`absolute bottom-0 left-0 right-0 h-[3px] ${isAboutPage ? "bg-white" : "bg-[#00AA55]"}`}
                                                 />
                                             )}
                                         </Link>
