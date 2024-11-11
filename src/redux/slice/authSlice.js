@@ -7,23 +7,25 @@ import toast from "react-hot-toast";
 export const login = createAsyncThunk(
     'auth/login',
     async ({email, password}, {rejectWithValue}) => {
-       try{ email = email.toLowerCase()
-        const response = await axios.post("auth/login", {email, password}).catch(e => e.response)
-        // console.log(response.status)
-        if (response.status !== 200) return rejectWithValue("Invalid email or password");
-        // console.log(response.data)
-        const {token} = response.data.data
-        if (response.data.data) {
-            localStorage.setItem("token", token);
-            setupAxios(token);
-            const {role, sub: userId} = jwtDecode(token);
-            localStorage.setItem("userId", userId);
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", role);
-            return {userId, email, role};
-        } else {
-            return rejectWithValue("Invalid email or password");
-        }} catch (e) {
+        try {
+            email = email.toLowerCase()
+            const response = await axios.post("auth/login", {email, password}).catch(e => e.response)
+            // console.log(response.status)
+            if (response.status !== 200) return rejectWithValue("Invalid email or password");
+            // console.log(response.data)
+            const {token} = response.data.data
+            if (response.data.data) {
+                localStorage.setItem("token", token);
+                setupAxios(token);
+                const {role, sub: userId} = jwtDecode(token);
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("email", email);
+                localStorage.setItem("role", role);
+                return {userId, email, role};
+            } else {
+                return rejectWithValue("Invalid email or password");
+            }
+        } catch (e) {
             console.log(e)
             return rejectWithValue(e)
         }
@@ -44,6 +46,7 @@ const AuthSlice = createSlice({
     reducers: {
 
         logout: (state) => {
+            window.location.href = "/";
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             localStorage.removeItem("email");
@@ -76,7 +79,7 @@ const AuthSlice = createSlice({
                 state.registerData = null;
                 state.registerAs = null;
             })
-          .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
+            .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
                 toast.error(action.payload);
                 state.status = "failed";
                 state.isLoggedIn = false;
