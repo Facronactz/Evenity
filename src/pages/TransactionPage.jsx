@@ -549,7 +549,7 @@ const TransactionPage = () => {
                           {item.cost}
                         </TableCell>
                         <TableCell className="text-center pb-5">
-                          { selectedTransaction?.paymentStatus === "COMPLETE" && (
+                          { item.forwardPaymentStatus !== "COMPLETE" && (
                             <button
                               className="mt-4 bg-[#00AA55] text-white py-2 px-4 rounded-xl"
                               onClick={() => handleForwardPayment(item)}

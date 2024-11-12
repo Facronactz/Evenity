@@ -119,7 +119,9 @@ const vendorSlice = createSlice({
         builder
             .addCase(getAllVendors.fulfilled, (state, action) => {
                 state.status = "success";
-                state.vendors = action.payload;
+                state.vendors = action.payload.sort((a, b) => {
+                    return new Date(a.modifiedDate) - new Date(b.modifiedDate);
+                });
             })
             .addCase(getProductByVendorId.fulfilled, (state, action) => {
                 console.log("product selected", action)
