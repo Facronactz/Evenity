@@ -26,27 +26,49 @@ import { Skeleton } from "@/components/ui/skeleton";
 const TransactionPage = () => {
   setupAxios();
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("ALL");
-
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const dispatch = useDispatch();
+  const { transaction, status, selectedTransaction } =
+    useSelector((state) => state.transaction);
+ // Filtered and Paginated Data
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
 
-  const dispatch = useDispatch();
-  const { transaction, status, selectedTransaction, totalPages, currentPage } =
-    useSelector((state) => state.transaction);
+  const filteredTransactions = transaction.filter(
+  (t) => {
+    const matchesSearch = t.customerName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+      || t.eventName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      selectedStatus === "ALL" || t.paymentStatus === selectedStatus;
+
+    return matchesSearch && matchesStatus;
+  }
+  );
+
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+  const paginatedTransactions = filteredTransactions.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+  );
 
   useEffect(() => {
-    dispatch(
-      getAllTransactions({
-        page: currentPage,
-      })
-    );
-  }, [dispatch, currentPage]);
+    dispatch(getAllTransactions());
+  }, [dispatch]);
+
+  useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery, selectedStatus]);
 
   const calculateTotalCost = (invoiceDetailList) => {
     const totalCost = invoiceDetailList
@@ -65,11 +87,12 @@ const TransactionPage = () => {
   };
 
   const handlePageChange = (page) => {
-    dispatch(
-      getAllTransactions({
-        page: page,
-      })
-    );
+    // dispatch(
+    //   getAllTransactions({
+    //     page: page,
+    //   })
+    // );
+    setCurrentPage(page);
   };
 
   const handleSearchChange = (e) => {
@@ -95,7 +118,7 @@ const TransactionPage = () => {
   }, [searchQuery]);
 
   const renderPagination = () => {
-    if (totalPages <= 1) return null;
+    // if (totalPages <= 1) return null;
 
     const renderPageButtons = () => {
       const buttons = [];
@@ -234,21 +257,7 @@ const TransactionPage = () => {
     }
   };
 
-  const filteredTransactions = transaction.filter(
-    (t) => {
-      const matchesSearch = t.customerName
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-        || t.eventName
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
   
-      const matchesStatus =
-        selectedStatus === "ALL" || t.paymentStatus === selectedStatus;
-  
-      return matchesSearch && matchesStatus;
-    }
-  );
 
     const renderFilterDropdown = () => {
     const statusOptions = [
@@ -344,7 +353,7 @@ const TransactionPage = () => {
         {renderFilterDropdown()}
       </div>
       <div className="grid gap-8 mb-20">
-        {filteredTransactions.map((transaction) => (
+        {paginatedTransactions.map((transaction) => (
           <div
             key={transaction.id}
             onClick={() => handleSelectDetail(transaction)}
