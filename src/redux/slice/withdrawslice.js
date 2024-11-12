@@ -24,12 +24,22 @@ export const getAllWithdraws = createAsyncThunk(
 
 export const approveWithdraw = createAsyncThunk(
     'withdraw/approveWithdraw',
-    async (id, {
+    async ({id, file}, {
         rejectWithValue,
         dispatch
     }) => {
+
+        const token = localStorage.getItem("token");
+
         try {
-            const response = await axios.put(`/transaction/withdraw/${id}/approve`);
+            const response = await axios.put(`/transaction/withdraw/${id}/approve`, file, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log("Response data", response.data)
             // Refresh list setelah approve
             await dispatch(getAllWithdraws({
                 page: 1,
@@ -37,6 +47,7 @@ export const approveWithdraw = createAsyncThunk(
             }));
             return response.data;
         } catch (error) {
+            console.log(error)
             return rejectWithValue(error.response?.data || {
                 message: "Approval failed"
             });
