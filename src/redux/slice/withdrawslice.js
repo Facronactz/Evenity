@@ -113,7 +113,7 @@ const withdrawSlice = createSlice({
             .addCase(getAllWithdraws.fulfilled, (state, action) => {
                 state.status = "success";
                 state.withdrawRequests = action.payload.data.sort((a, b) => {
-                    return new Date(b.createdDate) - new Date(a.createdDate);
+                    return new Date(b.modifiedDate) - new Date(a.modifiedDate);
                 })
                 state.totalItems = action.payload.pagingResponse?.count || 0;
                 state.currentPage = action.payload.pagingResponse?.page || 1;

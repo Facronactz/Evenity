@@ -49,8 +49,8 @@ const eventSlice = createSlice({
         builder
             .addCase(getEventDetail.fulfilled, (state, action) => {
                 state.status = "success";
-                state.event = action.payload;
-                // state.event = action.payload.sort((a, b) => new Date(b.modifiedDate) - new Date(a.modifiedDate));
+
+                state.event = action.payload.sort((a, b) => new Date(b.modifiedDate) - new Date(a.modifiedDate));
                 // state.event = action.payload.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
             })
             .addCase(getEventDetail.rejected, (state, action) => {
