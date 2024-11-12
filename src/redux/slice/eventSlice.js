@@ -5,10 +5,10 @@ const itemsPerPage = 8;
 
 export const getEventDetail = createAsyncThunk(
     "event/getEventDetail",
-    async ({page=1}, {rejectWithValue}) => {
+    async (_, {rejectWithValue}) => {
         const token = localStorage.getItem("token");
         const response = await axios
-            .get(`/event/all?page=${page}&size=${itemsPerPage}`, {
+            .get(`/event/all`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -18,7 +18,7 @@ export const getEventDetail = createAsyncThunk(
             });
         // console.log("response",response);
         if (response.data) {
-            return response.data;
+            return response.data.data;
         } else {
             return rejectWithValue("Invalid email or password");
         }
@@ -49,12 +49,9 @@ const eventSlice = createSlice({
         builder
             .addCase(getEventDetail.fulfilled, (state, action) => {
                 state.status = "success";
-                state.totalItems = action.payload.pagingResponse.count;
-                state.currentPage = action.payload.pagingResponse.page;
-                // console.log("responseData", action.payload.data);
-                state.event = action.payload.data;
-                // console.log("event", state.event);
-                state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage);
+                state.event = action.payload;
+                // state.event = action.payload.sort((a, b) => new Date(b.modifiedDate) - new Date(a.modifiedDate));
+                // state.event = action.payload.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
             })
             .addCase(getEventDetail.rejected, (state, action) => {
                 state.status = "failed";

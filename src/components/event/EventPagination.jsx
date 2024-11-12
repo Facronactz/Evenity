@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EventPagination = ({totalPages, currentPage, onPageChange}) => {
+const EventPagination = ({ totalPages, currentPage, onPageChange }) => {
     const renderPageButtons = () => {
         const buttons = [];
         const maxVisiblePages = 5;
@@ -31,29 +31,13 @@ const EventPagination = ({totalPages, currentPage, onPageChange}) => {
             );
         }
 
+        // Calculate start and end page numbers
         let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-        // First page button
-        if (startPage > 1) {
-            buttons.push(
-                <button
-                    key="first"
-                    onClick={() => onPageChange(1)}
-                    className="mx-1 rounded-full w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition duration-300"
-                >
-                    1
-                </button>
-            );
-
-            // Ellipsis for first pages
-            if (startPage > 2) {
-                buttons.push(
-                    <span key="ellipsis-start" className="mx-2 text-gray-400">
-            ...
-          </span>
-                );
-            }
+        // Adjust startPage if endPage is less than maxVisiblePages
+        if (endPage - startPage < maxVisiblePages - 1) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
 
         // Page number buttons
@@ -69,27 +53,6 @@ const EventPagination = ({totalPages, currentPage, onPageChange}) => {
                     }`}
                 >
                     {i}
-                </button>
-            );
-        }
-
-        // Last page and ellipsis
-        if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-                buttons.push(
-                    <span key="ellipsis-end" className="mx-2 text-gray-400">
-            ...
-          </span>
-                );
-            }
-
-            buttons.push(
-                <button
-                    key="last"
-                    onClick={() => onPageChange(totalPages)}
-                    className="mx-1 rounded-full w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition duration-300"
-                >
-                    {totalPages}
                 </button>
             );
         }

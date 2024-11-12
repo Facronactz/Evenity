@@ -19,11 +19,11 @@ const EventCard = ({event, onClick}) => {
             </div>
             <button
                 className={`
-          ${isEventPast ? 'bg-[#FF5500]' : 'bg-[#00AA55]'} 
+          ${isEventPast ? 'bg-[#00AA55]' : 'bg-[#FF5500]'} 
           text-white py-3 px-8 rounded-[30px] mt-12 font-bold text-xl
         `}
             >
-                {isEventPast ? 'Not Yet Started' : 'Finished'}
+                {isEventPast ? 'Finished' : 'Not Yet Started'}
             </button>
         </div>
     );
