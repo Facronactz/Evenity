@@ -18,8 +18,10 @@ const WithdrawPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview , setPreview] = useState(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-const [enlargedImageUrl, setEnlargedImageUrl] = useState(null);
-const [errorMessage, setErrorMessage] = useState("");
+  const [enlargedImageUrl, setEnlargedImageUrl] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isFileValid, setIsFileValid] = useState(false); // Status validasi file
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
   const { withdrawRequests } = useSelector(
     (state) => state.withdraw
@@ -76,27 +78,48 @@ const [errorMessage, setErrorMessage] = useState("");
         return
       }
       // Assuming you have a function to upload the file
-      if (selectedFile) {
-        setErrorMessage("");
-        const formData = new FormData();
+      const formData = new FormData();
         formData.append("image", selectedFile);
-        console.log(selectedWithdraw)
+        console.log(selectedWithdraw);
+        console.log(selectedFile);
 
-        console.log(selectedFile)
         dispatch(approveWithdraw({
           id: selectedWithdraw.id,
           file: formData
         }));
-      }
-     
-      setIsOpen(false);
+
+        setIsOpen(false);
     }
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
-    setPreview(URL.createObjectURL(file));
+    if (file) {
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp'];
+      const isImage = validImageTypes.includes(file.type);
+      const isValidSize = file.size <= MAX_FILE_SIZE;
+
+      if (!isImage) {
+        setErrorMessage("Please upload a valid image file (JPG, PNG, GIF, BMP).");
+        setSelectedFile(null);
+        setPreview(null);
+        setIsFileValid(false);
+        return;
+      }
+
+      if (!isValidSize) {
+        setErrorMessage("File size must be less than 2MB.");
+        setSelectedFile(null);
+        setPreview(null);
+        setIsFileValid(false);
+        return;
+      }
+
+      setErrorMessage(""); // Reset error message
+      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file));
+      setIsFileValid(true);
+    }
   }
 
   const handleReject = () => {
@@ -263,7 +286,8 @@ const [errorMessage, setErrorMessage] = useState("");
                 <div className="flex justify-center space-x-4 mt-6">
                   <button
                     onClick={handleApprove}
-                    className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition"
+                    disabled={!isFileValid}
+                    className={`bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition ${!isFileValid ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     Approve
                   </button>
