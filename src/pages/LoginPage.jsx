@@ -30,7 +30,6 @@ const LoginPage = () => {
     return (
         <>
             <div className="bg-[#00AA55] h-[100vh] overflow-hidden">
-
                 <div className="w-full grid grid-cols-3 min-h-screen">
                     <div className="col-span-2 flex justify-center items-center">
                         <img src={illustration} className="w-[60%] object-cover"/>
@@ -81,7 +80,6 @@ const LoginPage = () => {
                         </form>
                     </div>
                 </div>
-
             </div>
         </>
     );

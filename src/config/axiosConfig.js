@@ -6,7 +6,7 @@ export const setupAxios = (token = null) => {
     if (token) {
         axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     }
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+    // axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
     axios.interceptors.response.use(
         (response) => {
             return response;
@@ -17,7 +17,6 @@ export const setupAxios = (token = null) => {
                 localStorage.removeItem("userId");
                 localStorage.removeItem("email");
                 localStorage.removeItem("role");
-                // window.location.href = "/not-found";
             }
             return Promise.reject(error);
         }

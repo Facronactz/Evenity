@@ -179,7 +179,7 @@ const WithdrawPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white pb-32">
       <div className=" container mx-auto flex-grow pt-20 px-4">
         <div className="flex flex-col items-center">
         <h1 className="py-10 text-4xl font-bold text-center text-gray-800">
@@ -208,7 +208,7 @@ const WithdrawPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 pb-20">
-          {paginatedWithdraws.map((withdraw) => (
+          {processedWithdraws.map((withdraw) => (
             <div
               key={withdraw.id}
               onClick={() => openWithdrawDetail(withdraw)}
@@ -230,7 +230,6 @@ const WithdrawPage = () => {
             </div>
           ))}
         </div>
-
         {/* Modal Detail */}
         {isOpen && selectedWithdraw && (
           <Modal
@@ -313,7 +312,6 @@ const WithdrawPage = () => {
             </div>
           </Modal>
         )}
-
         {renderPagination()}
       </div>
     </div>
