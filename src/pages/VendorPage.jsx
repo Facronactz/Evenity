@@ -333,11 +333,12 @@ const VendorPage = () => {
             closeDialog={handleCloseModal}
         >
             <h1 className="text-4xl font-bold mb-6">{selectedVendor?.name}</h1>
+            <h1 className="text-xl font-bold">Vendor</h1>
+            <div className="border-b-2 border-gray-300 my-2 me-14"></div>
+
             <div className="grid grid-cols-2 gap-10">
                 <div>
-                    <h1 className="text-xl font-bold">Vendor</h1>
-                    <div className="border-b-2 border-gray-300 my-2 me-14"></div>
-
+                    
                     <div className="flex flex-col gap-2 justify-center">
                         <div className="flex">
                             <h1 className="w-1/2 font-semibold">Vendor ID</h1>
@@ -355,6 +356,10 @@ const VendorPage = () => {
                             <h1 className="font-semibold w-1/2">Phone Number</h1>
                             <p className="w-1/2">{selectedVendor?.phoneNumber}</p>
                         </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="flex flex-col gap-2 justify-center">
                         <div className="flex">
                             <h1 className="font-semibold w-1/2">Location</h1>
                             <p className="w-1/2">
@@ -370,33 +375,6 @@ const VendorPage = () => {
                             <Badge className={`text-white ${selectedVendor?.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}>
                                 {selectedVendor?.status}
                             </Badge>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h1 className="text-xl font-bold">Product</h1>
-                    <div className="border-b-2 border-gray-300 my-2 me-14"></div>
-
-                    <div className="flex flex-col gap-2 justify-center">
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Name</h1>
-                            <p className="w-1/2">tes</p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Type</h1>
-                            <p className="w-1/2">Arts & Decoration</p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Price</h1>
-                            <p className="w-1/2"></p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Unit</h1>
-                            <p className="w-1/2"></p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Description</h1>
-                            <p className="w-1/2"></p>
                         </div>
                     </div>
                 </div>

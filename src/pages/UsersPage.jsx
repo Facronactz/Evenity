@@ -323,19 +323,21 @@ const UsersPage = () => {
                 >
                     <div>
                         <h1 className="text-2xl font-bold">{selectedCustomer?.fullName}</h1>
+                        <div className="border-b-2 border-gray-300 my-2 me-14"></div>
+
                     </div>
                     <div className="grid grid-cols-2 gap-10">
                         <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Name</h1>
-                                <p>{selectedCustomer?.fullName}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Name</h1>
+                                <p className="w-1/2">{selectedCustomer?.fullName}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Email</h1>
-                                <p>{selectedCustomer?.email}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Email</h1>
+                                <p className="w-1/2">{selectedCustomer?.email}</p>
                             </div>
-                            <div className="flex justify-between items-center font -semibold">
-                                <h1 className="font-semibold">Status</h1>
+                            <div className="flex font -semibold">
+                                <h1 className="w-1/2 font-semibold">Status</h1>
                                 <Badge
                                     className={
                                         selectedCustomer?.status === "ACTIVE"
@@ -346,27 +348,27 @@ const UsersPage = () => {
                                     {selectedCustomer?.status}
                                 </Badge>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Phone Number</h1>
-                                <p>{selectedCustomer?.phoneNumber}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Phone Number</h1>
+                                <p className="w-1/2">{selectedCustomer?.phoneNumber}</p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Province</h1>
-                                <p>{selectedCustomer?.province}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Province</h1>
+                                <p className="w-1/2">{selectedCustomer?.province}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">City</h1>
-                                <p>{selectedCustomer?.city}</p>
+                            <div className="flex">
+                                <h1 className="font-semibold w-1/2">City</h1>
+                                <p className="w-1/2">{selectedCustomer?.city}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">District</h1>
-                                <p>{selectedCustomer?.district}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">District</h1>
+                                <p className="w-1/2">{selectedCustomer?.district}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Address</h1>
-                                <p>{selectedCustomer?.address}</p>
+                            <div className="flex">
+                                <h1 className="font-semibold w-1/2">Address</h1>
+                                <p className="w-1/2">{selectedCustomer?.address}</p>
                             </div>
                         </div>
                     </div>
