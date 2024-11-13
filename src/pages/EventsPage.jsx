@@ -99,7 +99,7 @@ const EventsPage = () => {
     const paginatedEvents = filteredEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="container mx-auto h-[120vh] pt-16">
+        <div className="container mx-auto min-h-screen flex flex-col bg-white  pt-16 pb-32">
             <EventHeader />
             <div className="relative w-full flex justify-center mb-10 space-x-4 items-center">
                 <EventSearch

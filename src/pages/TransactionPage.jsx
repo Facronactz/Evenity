@@ -35,7 +35,7 @@ const TransactionPage = () => {
     useSelector((state) => state.transaction);
  // Filtered and Paginated Data
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 4;
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
@@ -334,7 +334,7 @@ const TransactionPage = () => {
   };
 
   return (
-    <div className="container mx-auto h-[100vh] pt-20">
+    <div className="container min-h-screen flex flex-col bg-white mx-auto pt-20 pb-32">
       <h1 className="py-10 text-5xl font-bold text-center">Transaction</h1>
       <div className="relative w-full flex justify-center mb-10 gap-3">
         <div className="relative w-1/2 group">
@@ -420,7 +420,7 @@ const TransactionPage = () => {
                   </div>
                   <div className="flex">
                     <h1 className="font-bold w-1/2">Transaction Status</h1>
-                    <Badge className={"bg-[#00AA55] text-white"}>
+                    <Badge className={`${selectedTransaction?.paymentStatus === "COMPLETE" ? "bg-green-500" : "bg-red-500"} text-white`}>
                       {selectedTransaction?.paymentStatus}
                     </Badge>
                   </div>
@@ -558,7 +558,7 @@ const TransactionPage = () => {
                           {item.cost}
                         </TableCell>
                         <TableCell className="text-center pb-5">
-                          { item.forwardPaymentStatus !== "COMPLETE" && (
+                          { item.forwardPaymentStatus !== "COMPLETE" && selectedTransaction.paymentStatus !== "UNPAID" && (
                             <button
                               className="mt-4 bg-[#00AA55] text-white py-2 px-4 rounded-xl"
                               onClick={() => handleForwardPayment(item)}
