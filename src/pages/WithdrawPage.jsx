@@ -177,7 +177,7 @@ const WithdrawPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white pb-32">
       <div className=" container mx-auto flex-grow pt-20 px-4">
         <div className="flex flex-col items-center">
         <h1 className="py-10 text-4xl font-bold text-center text-gray-800">

@@ -173,7 +173,7 @@ const VendorPage = () => {
         </div>);
     };
 
-    return (<div className="container mx-auto h-screen pt-16 pb-20">
+    return (<div className="container mx-auto min-h-screen flex flex-col bg-white  pt-16 pb-32">
         <div className="text-center py-10">
             <h1
                 className="py-2 text-5xl font-bold text-center mx-auto relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#00AA55] hover:after:w-full after:transition-all after:duration-500 after:origin-center"
