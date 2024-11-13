@@ -206,7 +206,7 @@ const WithdrawPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 pb-20">
-          {paginatedWithdraws.map((withdraw) => (
+          {processedWithdraws.map((withdraw) => (
             <div
               key={withdraw.id}
               onClick={() => openWithdrawDetail(withdraw)}
@@ -228,7 +228,6 @@ const WithdrawPage = () => {
             </div>
           ))}
         </div>
-
         {/* Modal Detail */}
         {isOpen && selectedWithdraw && (
           <Modal
@@ -311,7 +310,6 @@ const WithdrawPage = () => {
             </div>
           </Modal>
         )}
-
         {renderPagination()}
       </div>
     </div>
