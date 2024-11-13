@@ -66,8 +66,6 @@ const UsersPage = () => {
         }
         setIsOpen(false);
     };
-
-    // Pagination Render
     const renderPagination = () => {
         // if (totalPages <= 1) return null;
 
