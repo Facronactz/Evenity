@@ -72,7 +72,9 @@ const customerSlice = createSlice({
             })
             .addCase(getAllCustomers.fulfilled, (state, action) => {
                 state.status = "success"
-                state.customers = action.payload.data
+                state.customers = action.payload.data.sort((a, b) => {
+                    return new Date(a.modifiedDate) - new Date(b.modifiedDate);
+                });
 
                 state.totalItems = action.payload.pagingResponse.count
 

@@ -14,6 +14,7 @@ import {FaFilter, FaSearch} from "react-icons/fa";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.jsx";
 import {formatNumberToCurrency} from "@/helper/formatter.js";
 import {Skeleton} from "@/components/ui/skeleton.jsx";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const VendorPage = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,11 @@ const VendorPage = () => {
         label: "Inactive"
     }, // { value: "PENDING", label: "Pending" },
     ];
+
+    const sortOptions = [
+    {value: 'startDate', label: 'Start Date'},
+    {value: 'modifiedDate', label: 'Modified Date'},
+];
 
     // useEffect(() => {
     //     dispatch(getAllVendors());
@@ -292,32 +298,6 @@ const VendorPage = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div className="mt-6 flex justify-end space-x-3">
-                        <button
-                            onClick={() => {
-                                setSelectedStatus("ALL");
-                                setSelectedCategory("ALL");
-                                setIsFilterOpen(false);
-                            }}
-                            className="text-gray-500 hover:text-gray-700
-          px-3 py-2 rounded-lg 
-          hover:bg-gray-100 
-          transition duration-300"
-                        >
-                            Reset
-                        </button>
-                        <button
-                            onClick={() => setIsFilterOpen(false)}
-                            className="bg-[#00AA55]/10 text-[#00AA55]
-          px-4 py-2 rounded-lg 
-          hover:bg-[#00AA55]/20 
-          transition duration-300 
-          font-semibold"
-                        >
-                            Apply
-                        </button>
-                    </div>
                 </div>)}
             </div>
         </div>
@@ -353,11 +333,12 @@ const VendorPage = () => {
             closeDialog={handleCloseModal}
         >
             <h1 className="text-4xl font-bold mb-6">{selectedVendor?.name}</h1>
+            <h1 className="text-xl font-bold">Vendor</h1>
+            <div className="border-b-2 border-gray-300 my-2 me-14"></div>
+
             <div className="grid grid-cols-2 gap-10">
                 <div>
-                    <h1 className="text-xl font-bold">Vendor</h1>
-                    <div className="border-b-2 border-gray-300 my-2 me-14"></div>
-
+                    
                     <div className="flex flex-col gap-2 justify-center">
                         <div className="flex">
                             <h1 className="w-1/2 font-semibold">Vendor ID</h1>
@@ -375,6 +356,10 @@ const VendorPage = () => {
                             <h1 className="font-semibold w-1/2">Phone Number</h1>
                             <p className="w-1/2">{selectedVendor?.phoneNumber}</p>
                         </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="flex flex-col gap-2 justify-center">
                         <div className="flex">
                             <h1 className="font-semibold w-1/2">Location</h1>
                             <p className="w-1/2">
@@ -385,43 +370,17 @@ const VendorPage = () => {
                             <h1 className="font-semibold w-1/2">Address</h1>
                             <p className="w-1/2">{selectedVendor?.address}</p>
                         </div>
-                        <div className="flex items-center">
+                       <div className="flex items-center">
                             <h1 className="font-semibold w-1/2">Status</h1>
-                            <Badge className={"text-white bg-[#00AA55]"}>
+                            <Badge className={`text-white ${selectedVendor?.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}>
                                 {selectedVendor?.status}
                             </Badge>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <h1 className="text-xl font-bold">Product</h1>
-                    <div className="border-b-2 border-gray-300 my-2 me-14"></div>
-
-                    <div className="flex flex-col gap-2 justify-center">
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Name</h1>
-                            <p className="w-1/2">tes</p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Type</h1>
-                            <p className="w-1/2">Arts & Decoration</p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Product Price</h1>
-                            <p className="w-1/2"></p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Unit</h1>
-                            <p className="w-1/2"></p>
-                        </div>
-                        <div className="flex">
-                            <h1 className="font-semibold w-1/2">Description</h1>
-                            <p className="w-1/2"></p>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <Table className="mt-10">
+            <ScrollArea className=" h-[300px] w-full relative rounded-md overflow-scroll mt-10">
+            <Table className="">
                 <TableHeader className="font-bold text-white bg-[#00AA55] rounded-full">
                     <TableRow className="">
                         <TableHead className="text-white">Name</TableHead>
@@ -444,7 +403,8 @@ const VendorPage = () => {
                     </TableRow>))}
                 </TableBody>
             </Table>
-            <div className="flex justify-center items-center gap-10 mt-12">
+            </ScrollArea>
+            <div className="flex justify-center items-center gap-10 mt-5">
                 <button
                     onClick={() => {
                         handleToggleStatus(selectedVendor);
