@@ -8,18 +8,17 @@ const itemsPerPage = 8
 
 export const getAllCustomers = createAsyncThunk(
     'customer/getAllCustomers',
-    async ({
-        page = 1
-    }, {
+    async (_, {
         rejectWithValue
     }) => {
         try {
-            const response = await axios.get(`/customer?page=${page}&size=${itemsPerPage}`)
-            return response.data
+            const response = await axios.get(`/customer`); // Fetch all customers without pagination
+            return response.data;
         } catch (error) {
-            rejectWithValue(error)
+            return rejectWithValue(error);
         }
-    })
+    }
+);
 
 export const disableCustomer = createAsyncThunk(
     'customer/disableCustomer',
@@ -73,7 +72,9 @@ const customerSlice = createSlice({
             })
             .addCase(getAllCustomers.fulfilled, (state, action) => {
                 state.status = "success"
-                state.customers = action.payload.data
+                state.customers = action.payload.data.sort((a, b) => {
+                    return new Date(a.modifiedDate) - new Date(b.modifiedDate);
+                });
 
                 state.totalItems = action.payload.pagingResponse.count
 

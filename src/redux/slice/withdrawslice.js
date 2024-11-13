@@ -8,20 +8,11 @@ const itemsPerPage = 10; // Sesuaikan dengan kebutuhan
 
 export const getAllWithdraws = createAsyncThunk(
     'withdraw/getAllWithdraws',
-    async ({
-        page = 1,
-        status = '' // Tambahkan parameter status untuk filtering di backend
-    }, {
+    async (_, {
         rejectWithValue
     }) => {
         try {
-            const response = await axios.get(`/transaction/withdraw/request`, {
-                params: {
-                    page,
-                    size: itemsPerPage,
-                    status // Optional parameter untuk filter status
-                }
-            });
+            const response = await axios.get(`/transaction/withdraw/request`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || {
@@ -33,12 +24,22 @@ export const getAllWithdraws = createAsyncThunk(
 
 export const approveWithdraw = createAsyncThunk(
     'withdraw/approveWithdraw',
-    async (id, {
+    async ({id, file}, {
         rejectWithValue,
         dispatch
     }) => {
+
+        const token = localStorage.getItem("token");
+
         try {
-            const response = await axios.put(`/transaction/withdraw/${id}/approve`);
+            const response = await axios.put(`/transaction/withdraw/${id}/approve`, file, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log("Response data", response.data)
             // Refresh list setelah approve
             await dispatch(getAllWithdraws({
                 page: 1,
@@ -46,6 +47,7 @@ export const approveWithdraw = createAsyncThunk(
             }));
             return response.data;
         } catch (error) {
+            console.log(error)
             return rejectWithValue(error.response?.data || {
                 message: "Approval failed"
             });
@@ -110,7 +112,9 @@ const withdrawSlice = createSlice({
             })
             .addCase(getAllWithdraws.fulfilled, (state, action) => {
                 state.status = "success";
-                state.withdrawRequests = action.payload.data || [];
+                state.withdrawRequests = action.payload.data.sort((a, b) => {
+                    return new Date(b.modifiedDate) - new Date(a.modifiedDate);
+                })
                 state.totalItems = action.payload.pagingResponse?.count || 0;
                 state.currentPage = action.payload.pagingResponse?.page || 1;
                 state.totalPages = Math.ceil(

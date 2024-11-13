@@ -13,14 +13,27 @@ const WithdrawPage = () => {
   const [selectedWithdraw, setSelectedWithdraw] = useState(null);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview , setPreview] = useState(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [enlargedImageUrl, setEnlargedImageUrl] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isFileValid, setIsFileValid] = useState(false); // Status validasi file
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
-  const { withdrawRequests, status, totalPages, currentPage } = useSelector(
+  const { withdrawRequests } = useSelector(
     (state) => state.withdraw
   );
 
+
+
   useEffect(() => {
-    dispatch(getAllWithdraws({ page: currentPage }));
+    dispatch(getAllWithdraws());
   }, [dispatch, currentPage]);
+
+
 
   // Sorting dan Filtering
   const processedWithdraws = useMemo(() => {
@@ -44,6 +57,12 @@ const WithdrawPage = () => {
     });
   }, [withdrawRequests, statusFilter]);
 
+  const totalPages = Math.ceil(processedWithdraws.length / itemsPerPage);
+  const paginatedWithdraws = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return processedWithdraws.slice(startIndex, startIndex + itemsPerPage);
+  }, [processedWithdraws, currentPage, itemsPerPage]);
+
   // Handler untuk membuka modal detail
   const openWithdrawDetail = (withdraw) => {
     setSelectedWithdraw(withdraw);
@@ -51,18 +70,68 @@ const WithdrawPage = () => {
   };
 
   // Handler untuk approve/reject
-  const handleApprove = () => {
+  const handleApprove = async () => {
     if (selectedWithdraw) {
-      dispatch(approveWithdraw(selectedWithdraw.id));
-      setIsOpen(false);
+
+      if(!selectedFile){
+        setErrorMessage("Please upload an image");
+        return
+      }
+      // Assuming you have a function to upload the file
+      const formData = new FormData();
+        formData.append("image", selectedFile);
+        console.log(selectedWithdraw);
+        console.log(selectedFile);
+
+        dispatch(approveWithdraw({
+          id: selectedWithdraw.id,
+          file: formData
+        }));
+
+        setIsOpen(false);
     }
   };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp'];
+      const isImage = validImageTypes.includes(file.type);
+      const isValidSize = file.size <= MAX_FILE_SIZE;
+
+      if (!isImage) {
+        setErrorMessage("Please upload a valid image file (JPG, PNG, GIF, BMP).");
+        setSelectedFile(null);
+        setPreview(null);
+        setIsFileValid(false);
+        return;
+      }
+
+      if (!isValidSize) {
+        setErrorMessage("File size must be less than 2MB.");
+        setSelectedFile(null);
+        setPreview(null);
+        setIsFileValid(false);
+        return;
+      }
+
+      setErrorMessage(""); // Reset error message
+      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file));
+      setIsFileValid(true);
+    }
+  }
 
   const handleReject = () => {
     if (selectedWithdraw) {
       dispatch(rejectWithdraw(selectedWithdraw.id));
       setIsOpen(false);
     }
+  };
+
+  const handleImageClick = (url) => {
+    setEnlargedImageUrl(url);
+    setIsImageModalOpen(true);
   };
 
   // Status Badge
@@ -88,7 +157,8 @@ const WithdrawPage = () => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
-              onClick={() => dispatch(getAllWithdraws({ page }))}
+              // onClick={() => dispatch(getAllWithdraws({ page }))}
+              onClick={() => setCurrentPage(page)} 
               className={`
                 px-4 py-2 rounded-full 
                 ${
@@ -158,7 +228,6 @@ const WithdrawPage = () => {
             </div>
           ))}
         </div>
-
         {/* Modal Detail */}
         {isOpen && selectedWithdraw && (
           <Modal
@@ -196,13 +265,28 @@ const WithdrawPage = () => {
                     {new Date(selectedWithdraw.createdDate).toLocaleString()}
                   </p>
                 </div>
+                <div>
+                  <p className="text-gray-600">Proof of Transfer</p>
+                  <img className="w-[300px]" src={selectedWithdraw?.imageProofUrl} alt="" onClick={() => handleImageClick(selectedWithdraw?.imageProofUrl)} />
+                </div>
               </div>
+
+              {
+                selectedWithdraw.approvalStatus === "PENDING" && (
+                  <div className="container mx-auto">
+                   <input type="file" onChange={handleFileChange}/>
+                   {errorMessage && <p className="text-red-500 py-2">{errorMessage}</p>}
+                   {preview && <img src={preview} alt="Preview"  className="w-[300px] object-cover" />}
+                  </div>
+                )
+              }
 
               {selectedWithdraw.approvalStatus === "PENDING" && (
                 <div className="flex justify-center space-x-4 mt-6">
                   <button
                     onClick={handleApprove}
-                    className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition"
+                    disabled={!isFileValid}
+                    className={`bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition ${!isFileValid ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     Approve
                   </button>
@@ -214,10 +298,18 @@ const WithdrawPage = () => {
                   </button>
                 </div>
               )}
+             {isImageModalOpen && (
+        <Modal
+          isOpen={isImageModalOpen}
+          setIsOpen={setIsImageModalOpen}
+          closeDialog={() => setIsImageModalOpen(false)}
+        >
+          <img src={enlargedImageUrl} alt="Enlarged" className="aspect-square object-cover mx-auto" />
+        </Modal>
+      )}
             </div>
           </Modal>
         )}
-
         {renderPagination()}
       </div>
     </div>

@@ -8,13 +8,11 @@ const itemsPerPage = 4
 
 export const getAllTransactions = createAsyncThunk(
     'transaction/getAllTransactions',
-    async ({
-        page = 1
-    }, {
+    async (_, {
         rejectWithValue
     }) => {
         try {
-            const response = await axios.get(`/invoice?page=${page}&size=${itemsPerPage}`)
+            const response = await axios.get(`/invoice`)
             console.log("Response data", response.data)
             return response.data
         } catch (error) {
@@ -62,7 +60,9 @@ const transactionSlice = createSlice({
         builder
             .addCase(getAllTransactions.fulfilled, (state, action) => {
                 state.status = "success";
-                state.transaction = action.payload.data;
+                state.transaction = action.payload.data.sort((a, b) => {
+                    return new Date(b.modifiedDate) - new Date(a.modifiedDate);
+                });
                 state.totalItems = action.payload.pagingResponse.count;
                 state.currentPage = action.payload.pagingResponse.page;
                 state.totalPages = Math.ceil(action.payload.pagingResponse.count / itemsPerPage);
