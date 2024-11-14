@@ -5,6 +5,7 @@ const statusOptions = [
     {value: 'ALL', label: 'All'},
     {value: 'true', label: 'Not Started'},
     {value: 'false', label: 'Finished'},
+    {value: 'canceled', label: 'Canceled'},
 ];
 
 const sortOptions = [
