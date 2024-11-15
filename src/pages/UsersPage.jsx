@@ -66,8 +66,6 @@ const UsersPage = () => {
         }
         setIsOpen(false);
     };
-
-    // Pagination Render
     const renderPagination = () => {
         // if (totalPages <= 1) return null;
 
@@ -239,7 +237,7 @@ const UsersPage = () => {
     };
 
     return (
-        <div className="container mx-auto h-[100vh] pt-20">
+        <div className="container mx-auto min-h-screen flex flex-col bg-white  pt-20">
             <div className="text-center pt-10">
                 <h1 className="py-2 text-5xl font-bold text-center mx-auto relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#00AA55] hover:after:w-full after:transition-all after:duration-500 after:origin-center">
                     Customers
@@ -323,19 +321,21 @@ const UsersPage = () => {
                 >
                     <div>
                         <h1 className="text-2xl font-bold">{selectedCustomer?.fullName}</h1>
+                        <div className="border-b-2 border-gray-300 my-2 me-14"></div>
+
                     </div>
                     <div className="grid grid-cols-2 gap-10">
                         <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Name</h1>
-                                <p>{selectedCustomer?.fullName}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Name</h1>
+                                <p className="w-1/2">{selectedCustomer?.fullName}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Email</h1>
-                                <p>{selectedCustomer?.email}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Email</h1>
+                                <p className="w-1/2">{selectedCustomer?.email}</p>
                             </div>
-                            <div className="flex justify-between items-center font -semibold">
-                                <h1 className="font-semibold">Status</h1>
+                            <div className="flex font -semibold">
+                                <h1 className="w-1/2 font-semibold">Status</h1>
                                 <Badge
                                     className={
                                         selectedCustomer?.status === "ACTIVE"
@@ -346,27 +346,27 @@ const UsersPage = () => {
                                     {selectedCustomer?.status}
                                 </Badge>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Phone Number</h1>
-                                <p>{selectedCustomer?.phoneNumber}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Phone Number</h1>
+                                <p className="w-1/2">{selectedCustomer?.phoneNumber}</p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Province</h1>
-                                <p>{selectedCustomer?.province}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">Province</h1>
+                                <p className="w-1/2">{selectedCustomer?.province}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">City</h1>
-                                <p>{selectedCustomer?.city}</p>
+                            <div className="flex">
+                                <h1 className="font-semibold w-1/2">City</h1>
+                                <p className="w-1/2">{selectedCustomer?.city}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">District</h1>
-                                <p>{selectedCustomer?.district}</p>
+                            <div className="flex">
+                                <h1 className="w-1/2 font-semibold">District</h1>
+                                <p className="w-1/2">{selectedCustomer?.district}</p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <h1 className="font-semibold">Address</h1>
-                                <p>{selectedCustomer?.address}</p>
+                            <div className="flex">
+                                <h1 className="font-semibold w-1/2">Address</h1>
+                                <p className="w-1/2">{selectedCustomer?.address}</p>
                             </div>
                         </div>
                     </div>
