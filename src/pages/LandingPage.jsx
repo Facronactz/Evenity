@@ -97,7 +97,8 @@ const LandingPage = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="#"
+                href="https://drive.google.com/file/d/1aP7TzcwUDkVOdRJ9kGHwJ9AdeoxHsRlp/view?usp=drive_link"
+                target="_blank"
                 className="
                   flex items-center 
                   px-6 py-3 
@@ -116,7 +117,8 @@ const LandingPage = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="#"
+                href="https://drive.google.com/file/d/1nupgyWqHQrzHnuOkXgokYnVmqwiJb9e0/view?usp=drive_link"
+                target="_blank"
                 className="
                   flex items-center 
                   px-6 py-3 

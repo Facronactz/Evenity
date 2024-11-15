@@ -114,7 +114,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <div className=" bg-blueGray-100">
+            <div className="bg-white min-h-screen">
                 <div className=" bg-[#00AA55] pt-32 pb-32 mx-auto w-full">
                     <div className=" md:px-10 mx-auto w-full">
                         <div>
@@ -261,9 +261,9 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-1 lg:col-span-3 my-10 relative">
+                        {/* <div className="col-span-1 lg:col-span-3 my-10 relative">
                             <LeadStatsChart/>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
