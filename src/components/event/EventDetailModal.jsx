@@ -38,8 +38,12 @@ const EventDetails = ({event}) => (
                     <h1 className="w-1/2">Event Theme</h1>
                     <p className="w-1/2">{event?.theme}</p>
                 </div>
+                <div className="flex">
+                    <h1 className="w-1/2">Event Status</h1>
+                    <p className={` rounded-full py-2 text-white font-outfit font-bold text-center w-[100px] ${event?.isCancelled == true ? "bg-red-500" : "bg-green-500"}`}>{event?.isCancelled == true ? "Canceled" : "Active"}</p>
+                </div>
             </div>
-            <div className="flex flex-col gap-2 justify-center">
+            <div className="flex flex-col gap-2 ">
                 <div className="flex">
                     <h1 className="w-1/2">Event Location</h1>
                     <p className="w-1/2">

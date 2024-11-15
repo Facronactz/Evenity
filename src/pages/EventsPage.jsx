@@ -14,6 +14,7 @@ const EventsPage = () => {
     const [isSearching, setIsSearching] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState('ALL');
     const [selectedSort, setSelectedSort] = useState('startDate'); // State untuk sorting
+    const [isCancelled, setIsCancelled] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8; // Jumlah item per halaman
     const dispatch = useDispatch();
@@ -78,7 +79,12 @@ const EventsPage = () => {
             filteredEvents = isSearching ? 
                 searchResults.filter(isEventFinished) : 
                 event.filter(isEventFinished);
-        } else {
+        } else if(selectedStatus === 'canceled') {
+            filteredEvents = isSearching ? 
+                searchResults.filter((item) => item.isCancelled === true) : 
+                event.filter((item) => item.isCancelled === true);
+        }
+        else {
             return []; // Pastikan mengembalikan array kosong jika tidak ada status yang cocok
         }
 
